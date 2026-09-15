@@ -1,0 +1,87 @@
+// Prisma Schema for YASMIN (Yayasan Studi Migran Indonesia)
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Branch {
+  id          String      @id @default(cuid())
+  name        String
+  region      String      // Sumatera, Jawa, Bali-Nusa Tenggara, Kalimantan, Sulawesi
+  province    String
+  city        String
+  address     String
+  phone       String?
+  hotline     String      // Nomor WhatsApp Hotline darurat
+  email       String
+  lat         Float
+  lng         Float
+  isActive    Boolean     @default(true)
+  complaints  Complaint[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Publication {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  category      String   // Kertas Kebijakan, Laporan Tahunan, Panduan Advokasi, Riset & Studi, Amicus Curiae
+  year          Int
+  author        String   @default("Tim Riset & Advokasi YASMIN")
+  description   String
+  fileUrl       String   @default("/docs/sample-publication.pdf")
+  coverImage    String   @default("/images/pub-cover-default.jpg")
+  downloadCount Int      @default(0)
+  publishedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String   // Advokasi Kasus, Kabar Kebijakan, Edukasi Hak PMI, Siaran Pers
+  excerpt     String
+  content     String
+  imageUrl    String   @default("/images/news-default.jpg")
+  author      String   @default("Redaksi YASMIN")
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Complaint {
+  id              String   @id @default(cuid())
+  ticketCode      String   @unique // Contoh: YSM-2026-XXXX
+  complainantName String
+  isAnonymous     Boolean  @default(false)
+  contact         String   // Nomor WhatsApp aktif
+  email           String?
+  workerLocation  String   // Negara penempatan atau daerah asal (cth: Malaysia, Taiwan, Arab Saudi, NTB, Jatim)
+  category        String   // Gaji Tidak Dibayar, Kekerasan/Penyiksaan, Penipuan/TPPO, Dokumen Ditahan, Pemulangan, dll.
+  chronology      String
+  evidenceUrl     String?
+  status          String   @default("MENUNGGU_VERIFIKASI") // MENUNGGU_VERIFIKASI, SEDANG_DITANGANI, MEDIASI_HUKUM, SELESAI
+  adminNotes      String?
+  branchId        String?
+  branch          Branch?  @relation(fields: [branchId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String   // Bcrypt password hash
+  role      String   @default("LEGAL_STAFF") // SUPER_ADMIN, LEGAL_STAFF
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
