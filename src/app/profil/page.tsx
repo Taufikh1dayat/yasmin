@@ -6,7 +6,7 @@ export default function ProfilePage() {
     <div className="bg-slate-50 min-h-screen py-12 sm:py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Header Title */}
-        <div className="text-center space-y-4 max-w-3xl mx-auto">
+        <div id="profil" className="scroll-mt-24 text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200">
             <Shield className="w-3.5 h-3.5 text-emerald-700" />
             <span>Tentang Lembaga</span>
@@ -87,8 +87,11 @@ export default function ProfilePage() {
         </div>
 
         {/* Struktur Organisasi */}
-        <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-sm space-y-8">
+        <div id="struktur-organisasi" className="scroll-mt-24 bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-sm space-y-8">
           <div className="border-b border-slate-100 pb-4">
+            <span className="text-xs font-bold text-emerald-800 uppercase tracking-widest block mb-1">
+              Struktur Kepengurusan
+            </span>
             <h3 className="text-2xl font-extrabold text-slate-900">
               Struktur Organisasi Sekretariat Nasional
             </h3>
@@ -132,6 +135,85 @@ export default function ProfilePage() {
               <span className="text-[11px] font-bold text-amber-700 uppercase">Sekretariat & Keuangan</span>
               <h4 className="font-bold text-slate-900 text-base mt-1">Dewi Lestari, S.E.</h4>
               <p className="text-xs text-slate-500 mt-0.5">Manajemen Operasional & Pelaporan Publik</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Anggota & Tim Staf YASMIN */}
+        <div id="anggota" className="scroll-mt-24 bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-sm space-y-8">
+          <div className="border-b border-slate-100 pb-4">
+            <span className="text-xs font-bold text-blue-800 uppercase tracking-widest block mb-1">
+              Jajaran Keanggotaan & Staf
+            </span>
+            <h3 className="text-2xl font-extrabold text-slate-900">
+              Anggota & Pengurus Tim Pelaksana
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Tim profesional hukum, peneliti lapangan, dan staf operasional pendamping PMI di tingkat pusat maupun daerah.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="text-[10px] font-bold text-emerald-800 uppercase bg-emerald-100 px-2 py-0.5 rounded-full">Advokat Pendamping</span>
+              <h4 className="font-bold text-slate-900 text-sm">Ahmad Fauzi, S.H.</h4>
+              <p className="text-xs text-slate-500">Penanganan Litigasi Pidana & Perlindungan Hak Korban</p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="text-[10px] font-bold text-blue-800 uppercase bg-blue-100 px-2 py-0.5 rounded-full">Analis Data Kebijakan</span>
+              <h4 className="font-bold text-slate-900 text-sm">Rini Astuti, S.Sos.</h4>
+              <p className="text-xs text-slate-500">Dokumentasi Kasus CATAHU & Publikasi Ilmiah</p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="text-[10px] font-bold text-teal-800 uppercase bg-teal-100 px-2 py-0.5 rounded-full">Pendamping Kasus Luar Negeri</span>
+              <h4 className="font-bold text-slate-900 text-sm">Hendra Gunawan</h4>
+              <p className="text-xs text-slate-500">Koordinasi Diplomatik Perwakilan RI di Malaysia & Taiwan</p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="text-[10px] font-bold text-amber-800 uppercase bg-amber-100 px-2 py-0.5 rounded-full">Fasilitator Komunitas</span>
+              <h4 className="font-bold text-slate-900 text-sm">Siti Rahmawati</h4>
+              <p className="text-xs text-slate-500">Pemberdayaan Kelompok Mantan PMI & Keluarga Asal</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Jaringan Paralegal Komunitas Basis */}
+        <div id="paralegal" className="scroll-mt-24 bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-sm space-y-8">
+          <div className="border-b border-slate-100 pb-4">
+            <span className="text-xs font-bold text-teal-800 uppercase tracking-widest block mb-1">
+              Garda Terdepan Komunitas
+            </span>
+            <h3 className="text-2xl font-extrabold text-slate-900">
+              Jaringan Paralegal Komunitas Desa
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Paralegal terlatih yang tinggal dan berakar di desa-desa kantong migran Indonesia, bertindak sebagai mediator awal dan sistem deteksi dini bahaya perdagangan manusia.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-2xl bg-teal-50/60 border border-teal-200/80 space-y-3">
+              <h4 className="font-bold text-slate-900 text-base">Verifikasi & Edukasi Pra-Penempatan</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Membantu calon PMI dan keluarga memverifikasi izin P3MI, keabsahan surat perjanjian kerja (PK), visa kerja resmi, dan menolak pungutan liar jalur tikus.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 space-y-3">
+              <h4 className="font-bold text-slate-900 text-base">Penerimaan Aduan Awal & Mediasi</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Menerima laporan keluarga PMI jika putus komunikasi, dugaan penahanan di agen, atau kekerasan di penampungan untuk segera diteruskan ke helpdesk YASMIN.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-blue-50/60 border border-blue-200/80 space-y-3">
+              <h4 className="font-bold text-slate-900 text-base">Pemulihan Hak & Reintegrasi Sosial</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Mendampingi kepulangan buruh migran yang mengalami trauma fisik maupun finansial agar mendapatkan bantuan sosial, rujukan medis, dan pemulihan martabat.
+              </p>
             </div>
           </div>
         </div>

@@ -41,7 +41,7 @@ export default async function HomePage() {
       <HeroSection />
 
       {/* 2. Mandat Pokok Advokasi YASMIN */}
-      <section className="py-20 bg-white border-y border-slate-200/80">
+      <section id="mandat-advokasi" className="scroll-mt-20 py-20 bg-white border-y border-slate-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
             <span className="text-xs font-bold text-emerald-800 uppercase tracking-widest block">
@@ -170,17 +170,17 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3. Peta Interaktif Sebaran Cabang */}
+      {/* 3. Pusat Berita Terupdate & Update Berita Langsung di Beranda */}
+      <ArticlesSection articles={articles.length > 0 ? articles : undefined} />
+
+      {/* 4. Peta Interaktif Sebaran Cabang */}
       <InteractiveMap />
 
-      {/* 4. Layanan Pengaduan Kasus Online & Live Ticket Tracking */}
+      {/* 5. Layanan Pengaduan Kasus Online & Live Ticket Tracking */}
       <ComplaintSection branches={branches} />
 
-      {/* 5. Pusat Publikasi & Riset */}
+      {/* 6. Pusat Publikasi & Riset */}
       <PublicationSection publications={publications.length > 0 ? publications : undefined} />
-
-      {/* 6. Kabar Advokasi & Berita */}
-      <ArticlesSection articles={articles.length > 0 ? articles : undefined} />
     </div>
   );
 }

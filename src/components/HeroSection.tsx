@@ -4,16 +4,16 @@ import { PhoneCall, FileText, ArrowRight, ShieldCheck, MapPin, Scale, AlertCircl
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden text-white bg-slate-950">
+    <section className="relative overflow-hidden text-white bg-slate-900">
       {/* Background Image Dokumenter Otentik */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none scale-100"
-        style={{ backgroundImage: "url('/images/imigran.jpg?v=2')" }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
+        style={{ backgroundImage: "url('/images/imigran.jpg?v=3')" }}
       ></div>
 
-      {/* Dark Vignette & Gradient Overlay yang Rapi dan Bermartabat */}
-      <div className="absolute inset-0 bg-slate-950/80 pointer-events-none"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/80 pointer-events-none"></div>
+      {/* Gradient Overlay Transparan: teks tetap terbaca jelas, gambar terlihat terang */}
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/50 to-slate-900/30 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40 pointer-events-none"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 lg:pt-24 lg:pb-28">
         <div className="max-w-3xl space-y-6">
@@ -61,40 +61,40 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* 3 Jalur Layanan Cepat (Bukan Statistik Palsu AI, tapi Layanan Nyata Lembaga) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-16 pt-8 border-t border-slate-800/80">
-          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-start gap-3.5">
-            <div className="p-2.5 rounded-xl bg-emerald-950 border border-emerald-800/60 text-emerald-400 flex-shrink-0">
+        {/* 3 Jalur Layanan Cepat (Layanan Nyata Lembaga) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-16 pt-8 border-t border-white/15">
+          <div className="p-5 rounded-2xl bg-slate-950/60 backdrop-blur-md border border-white/10 flex items-start gap-3.5 shadow-lg">
+            <div className="p-2.5 rounded-xl bg-emerald-900/80 border border-emerald-500/40 text-emerald-300 flex-shrink-0">
               <Scale className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-bold text-white text-sm">Bantuan Hukum Pro Bono</h3>
-              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
                 Penanganan sengketa upah, penahanan dokumen, kekerasan majikan, dan pemulangan tanpa pungutan biaya.
               </p>
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-start gap-3.5">
-            <div className="p-2.5 rounded-xl bg-blue-950 border border-blue-800/60 text-blue-400 flex-shrink-0">
+          <div className="p-5 rounded-2xl bg-slate-950/60 backdrop-blur-md border border-white/10 flex items-start gap-3.5 shadow-lg">
+            <div className="p-2.5 rounded-xl bg-blue-900/80 border border-blue-500/40 text-blue-300 flex-shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-bold text-white text-sm">Kerahasiaan Korban Terjamin</h3>
-              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
                 Pelapor dapat menggunakan opsi anonim demi keselamatan pribadi dan perlindungan saksi sesuai UU PDP.
               </p>
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-start gap-3.5">
-            <div className="p-2.5 rounded-xl bg-teal-950 border border-teal-800/60 text-teal-400 flex-shrink-0">
+          <div className="p-5 rounded-2xl bg-slate-950/60 backdrop-blur-md border border-white/10 flex items-start gap-3.5 shadow-lg">
+            <div className="p-2.5 rounded-xl bg-teal-900/80 border border-teal-500/40 text-teal-300 flex-shrink-0">
               <PhoneCall className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-bold text-white text-sm">Hotline Respons Cepat</h3>
-              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                Terhubung langsung ke koordinator advokasi di nomor resmi WhatsApp: <span className="text-emerald-400 font-bold">0811-9876-5431</span>.
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                Terhubung langsung ke koordinator advokasi di nomor resmi WhatsApp: <span className="text-emerald-300 font-bold">0811-9876-5431</span>.
               </p>
             </div>
           </div>

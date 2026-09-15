@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileText, Download, Search, BookOpen, ExternalLink, Filter, Calendar } from 'lucide-react';
 import Link from 'next/link';
 
@@ -104,6 +104,17 @@ export default function PublicationSection({ publications = DEFAULT_PUBLICATIONS
   const [search, setSearch] = useState('');
 
   const categories = ['Semua', 'Laporan Tahunan', 'Kertas Kebijakan', 'Panduan Advokasi', 'Riset & Studi', 'Amicus Curiae'];
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const cat = params.get('category') || params.get('cat');
+      if (cat) {
+        const found = categories.find((c) => c.toLowerCase() === cat.toLowerCase());
+        if (found) setSelectedCategory(found);
+      }
+    }
+  }, []);
 
   const filtered = publications.filter((p) => {
     const matchesCat = selectedCategory === 'Semua' || p.category === selectedCategory;
