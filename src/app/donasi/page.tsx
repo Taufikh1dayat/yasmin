@@ -177,6 +177,80 @@ export default function DonationPage() {
           </div>
         </div>
 
+        {/* Merchandise Komunitas Purna Migran */}
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-sm space-y-8">
+          <div className="border-b border-slate-100 pb-4">
+            <span className="text-xs font-bold text-amber-800 uppercase tracking-widest block mb-1">
+              Dukung Melalui Karya Komunitas
+            </span>
+            <h2 className="text-2xl font-extrabold text-slate-900">
+              Merchandise & Produk Komunitas Purna Migran
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Setiap pembelian produk karya buruh migran dan merchandise resmi YASMIN dialokasikan 100% untuk kas operasional bantuan hukum dan pendampingan korban TPPO.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Karya Komunitas</span>
+                <h3 className="font-bold text-slate-900 text-base">Kopi Robusta Majenang</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Kopi petik merah organik hasil budidaya kelompok tani purna buruh migran di Kecamatan Majenang, Cilacap (250gr).
+                </p>
+                <div className="text-base font-extrabold text-emerald-800 pt-1">Rp 45.000</div>
+              </div>
+              <a
+                href="https://wa.me/6281198765431?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Kopi%20Robusta%20Purna%20Migran%20Majenang"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs text-center block transition-colors"
+              >
+                Pesan via WhatsApp
+              </a>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-brand-blue-800">Merchandise Resmi</span>
+                <h3 className="font-bold text-slate-900 text-base">Kaos Solidaritas Hak Buruh Migran</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Kaos katun combed 24s premium bertema kampanye kedaulatan dan perlindungan pekerja migran Indonesia.
+                </p>
+                <div className="text-base font-extrabold text-emerald-800 pt-1">Rp 95.000</div>
+              </div>
+              <a
+                href="https://wa.me/6281198765431?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Kaos%20Solidaritas%20Hak%20Buruh%20Migran"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs text-center block transition-colors"
+              >
+                Pesan via WhatsApp
+              </a>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-teal-100 text-teal-800">Merchandise Resmi</span>
+                <h3 className="font-bold text-slate-900 text-base">Tote Bag Kanvas Pelindungan PMI</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Tas jinjing kanvas tebal ramah lingkungan dengan kutipan pesan advokasi YASMIN.
+                </p>
+                <div className="text-base font-extrabold text-emerald-800 pt-1">Rp 50.000</div>
+              </div>
+              <a
+                href="https://wa.me/6281198765431?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Tote%20Bag%20Kanvas%20Solidaritas"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs text-center block transition-colors"
+              >
+                Pesan via WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Jaminan Transparansi & Akuntabilitas */}
         <div className="bg-brand-blue-900 text-white rounded-3xl p-8 sm:p-10 shadow-md space-y-4">
           <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm">

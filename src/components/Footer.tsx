@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Scale, Phone, Mail, MapPin, ShieldCheck, HeartHandshake, FileText, ArrowUpRight } from 'lucide-react';
+import { Scale, Phone, Mail, MapPin, ShieldCheck, HeartHandshake, FileText, ArrowUpRight, Lock } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -27,25 +27,41 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Kolom 2: Kontak Sekretariat Nasional */}
+          {/* Kolom 2: Kontak Kantor Resmi YASMIN */}
           <div className="space-y-3">
             <h4 className="text-white font-bold text-base border-l-4 border-brand-green-500 pl-2.5">
-              Sekretariat Nasional
+              Kantor Pusat YASMIN
             </h4>
             <ul className="space-y-2.5 text-sm text-slate-400">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-emerald-400 mt-1 flex-shrink-0" />
-                <span>Jl. Salemba Tengah No. 42, Paseban, Senen, Jakarta Pusat 10440</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Telepon: (021) 3908812</span>
+                <span>Jalan Marta Atmaja, Kecamatan Majenang, Kabupaten Cilacap, Jawa Tengah, Indonesia</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Email: seknas@yasmin.or.id</span>
+                <a href="mailto:studi.migran@gmail.com" className="hover:text-emerald-300 transition-colors">
+                  studi.migran@gmail.com
+                </a>
               </li>
-              <li className="pt-1">
+              <li className="flex items-center gap-3 pt-1 text-xs">
+                <a
+                  href="https://instagram.com/studimigran"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+                >
+                  IG: @studimigran
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+                >
+                  FB: studi migran
+                </a>
+              </li>
+              <li className="pt-1.5">
                 <a
                   href="https://wa.me/6281198765431"
                   target="_blank"
@@ -120,7 +136,8 @@ export default function Footer() {
             <Link href="/profil" className="hover:text-slate-400">Kebijakan Privasi</Link>
             <Link href="/pengaduan" className="hover:text-slate-400">SOP Pelaporan</Link>
             <Link href="/admin/login" className="text-slate-500 hover:text-emerald-400 transition-colors flex items-center gap-1 font-semibold">
-              <span>🔒 Portal Admin</span>
+              <Lock className="w-3 h-3" />
+              <span>Portal Admin</span>
             </Link>
           </div>
         </div>

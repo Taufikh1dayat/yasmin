@@ -10,7 +10,8 @@ import {
   QrCode, 
   ShieldCheck, 
   Send,
-  ExternalLink
+  ExternalLink,
+  ShoppingBag
 } from 'lucide-react';
 
 interface DonationModalProps {
@@ -60,7 +61,7 @@ const BANK_ACCOUNTS = [
 export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(100000);
   const [customAmount, setCustomAmount] = useState<string>('');
-  const [activeTab, setActiveTab] = useState<'transfer' | 'qris'>('transfer');
+  const [activeTab, setActiveTab] = useState<'transfer' | 'qris' | 'merchandise'>('transfer');
   const [copiedBank, setCopiedBank] = useState<string | null>(null);
 
   // Form konfirmasi donatur
@@ -181,30 +182,42 @@ export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
             2. Rekening Resmi & Kanal Penyaluran
           </label>
 
-          <div className="flex rounded-xl bg-slate-100 p-1">
+          <div className="flex flex-wrap rounded-xl bg-slate-100 p-1 gap-1">
             <button
               type="button"
               onClick={() => setActiveTab('transfer')}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+              className={`flex-1 min-w-[110px] py-1.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
                 activeTab === 'transfer'
                   ? 'bg-white text-slate-900 shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <Building2 className="w-3.5 h-3.5" />
-              <span>Transfer Rekening Bank</span>
+              <span>Transfer Bank</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('qris')}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+              className={`flex-1 min-w-[110px] py-1.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
                 activeTab === 'qris'
                   ? 'bg-white text-slate-900 shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <QrCode className="w-3.5 h-3.5" />
-              <span>QRIS Instan (Semua E-Wallet & Bank)</span>
+              <span>QRIS Instan</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('merchandise')}
+              className={`flex-1 min-w-[140px] py-1.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                activeTab === 'merchandise'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>Merchandise Komunitas</span>
             </button>
           </div>
 
@@ -272,6 +285,64 @@ export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 <p className="text-[11px] text-slate-500 max-w-sm mx-auto">
                   Dapat dipindai menggunakan BCA Mobile, Livin Mandiri, BRImo, BNI Mobile, GoPay, OVO, Dana, mau pun ShopeePay.
                 </p>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'merchandise' && (
+            <div className="space-y-3">
+              <div className="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200/90 text-xs text-amber-900 leading-relaxed">
+                <strong>Dukungan Merchandise:</strong> 100% hasil penjualan produk karya komunitas purna migran dan merchandise resmi YASMIN dialokasikan untuk membiayai operasional bantuan hukum dan pendampingan buruh migran.
+              </div>
+
+              <div className="space-y-2.5">
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-900">Kopi Robusta Komunitas Purna Migran Majenang</h4>
+                    <p className="text-[10px] text-slate-500">Kopi petik merah hasil budidaya kelompok tani purna migran Cilacap (250gr)</p>
+                    <span className="text-xs font-extrabold text-emerald-800">Rp 45.000</span>
+                  </div>
+                  <a
+                    href="https://wa.me/6281198765431?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Kopi%20Robusta%20Purna%20Migran%20Majenang"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold whitespace-nowrap transition-colors"
+                  >
+                    Pesan
+                  </a>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-900">Kaos Solidaritas Hak & Kedaulatan Buruh Migran</h4>
+                    <p className="text-[10px] text-slate-500">Cotton combed 24s premium dengan pesan advokasi YASMIN</p>
+                    <span className="text-xs font-extrabold text-emerald-800">Rp 95.000</span>
+                  </div>
+                  <a
+                    href="https://wa.me/6281198765431?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Kaos%20Solidaritas%20Hak%20Buruh%20Migran"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold whitespace-nowrap transition-colors"
+                  >
+                    Pesan
+                  </a>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-900">Tote Bag Kanvas Kampanye Pelindungan PMI</h4>
+                    <p className="text-[10px] text-slate-500">Tas kanvas ramah lingkungan bertema perlindungan dan kedaulatan migran</p>
+                    <span className="text-xs font-extrabold text-emerald-800">Rp 50.000</span>
+                  </div>
+                  <a
+                    href="https://wa.me/6281198765431?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Tote%20Bag%20Kanvas%20Solidaritas"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold whitespace-nowrap transition-colors"
+                  >
+                    Pesan
+                  </a>
+                </div>
               </div>
             </div>
           )}

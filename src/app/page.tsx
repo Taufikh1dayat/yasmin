@@ -5,7 +5,7 @@ import InteractiveMap from '@/components/InteractiveMap';
 import PublicationSection from '@/components/PublicationSection';
 import ComplaintSection from '@/components/ComplaintSection';
 import ArticlesSection from '@/components/ArticlesSection';
-import { Scale, BookOpen, Users, ShieldCheck, HeartHandshake, FileSearch, ArrowRight } from 'lucide-react';
+import { Scale, BookOpen, Users, ShieldCheck, HeartHandshake, FileSearch, ArrowRight, GraduationCap, Megaphone } from 'lucide-react';
 import Link from 'next/link';
 
 export const revalidate = 0; // Dynamic data
@@ -40,128 +40,105 @@ export default async function HomePage() {
       {/* 1. Hero Section */}
       <HeroSection />
 
-      {/* 2. Mandat Pokok Advokasi YASMIN */}
+      {/* 2. Empat Program Pokok YASMIN */}
       <section id="mandat-advokasi" className="scroll-mt-20 py-20 bg-white border-y border-slate-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+          <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
             <span className="text-xs font-bold text-emerald-800 uppercase tracking-widest block">
-              Mandat & Ruang Lingkup Kerja
+              Program Umum & Ruang Lingkup Kerja
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Tiga Mandat Pokok Pelindungan Keadilan Migran
+              Empat Program Pokok Advokasi YASMIN
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Sinergi kerja advokasi bantuan hukum struktural, riset kebijakan berbasis data lapangan, serta pengorganisasian akar rumput di kantong-kantong migran Indonesia.
+              Fokus kerja terpadu Yayasan Studi Migran Indonesia untuk mempengaruhi kebijakan dan menciptakan kedaulatan serta pelindungan yang adil bagi migran, purna migran, dan keluarga.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Mandat 1: Bantuan Hukum */}
-            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-emerald-600 transition-colors">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
-                  <Scale className="w-6 h-6" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* 1. Penelitian */}
+            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-blue-700 transition-colors">
+              <div className="space-y-3">
+                <div className="w-11 h-11 rounded-xl bg-blue-100 text-brand-blue-900 flex items-center justify-center font-bold">
+                  <FileSearch className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-extrabold text-slate-900">
-                  1. Bantuan Hukum Litigasi & Pro Bono
+                <h3 className="text-base font-extrabold text-slate-900">
+                  1. Penelitian
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Layanan pendampingan hukum bebas biaya bagi buruh migran yang menghadapi kekerasan, sengketa hak, atau jeratan tindak pidana perdagangan orang.
+                  Mengetahui dan memahami situasi migrasi yang dialami oleh migran, purna migran, dan keluarga secara politik, ekonomi, budaya, dan sosial.
                 </p>
-
-                <ul className="space-y-2 pt-2 border-t border-slate-200 text-xs text-slate-700">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                    <span>Pendampingan korban TPPO & pemulangan darurat</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                    <span>Somasi penahanan dokumen & upah tak terbayar</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                    <span>Koordinasi diplomatik KBRI / KJRI negara tujuan</span>
-                  </li>
-                </ul>
               </div>
 
-              <div className="pt-6 mt-6 border-t border-slate-200">
-                <Link href="/pengaduan" className="text-xs font-bold text-emerald-800 flex items-center gap-1.5 hover:text-emerald-900">
-                  <span>Konsultasi & Pengaduan Kasus</span>
+              <div className="pt-4 mt-4 border-t border-slate-200">
+                <Link href="/publikasi" className="text-xs font-bold text-brand-blue-900 flex items-center gap-1 hover:text-brand-blue-950">
+                  <span>Lihat Hasil Riset</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>
 
-            {/* Mandat 2: Riset Kebijakan */}
-            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-blue-700 transition-colors">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-100 text-brand-blue-900 flex items-center justify-center font-bold">
-                  <FileSearch className="w-6 h-6" />
+            {/* 2. Pemberdayaan */}
+            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-teal-700 transition-colors">
+              <div className="space-y-3">
+                <div className="w-11 h-11 rounded-xl bg-teal-100 text-teal-900 flex items-center justify-center font-bold">
+                  <GraduationCap className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-extrabold text-slate-900">
-                  2. Riset Kebijakan Berbasis Bukti
+                <h3 className="text-base font-extrabold text-slate-900">
+                  2. Pemberdayaan
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Menerbitkan kajian empiris dan kertas advokasi untuk mengawal tata kelola penempatan dan pengawasan regulasi ketenagakerjaan migran.
+                  Mengembangkan dan meningkatkan potensi komunitas migran secara mandiri dan kolektif melalui pendidikan, pelatihan, dan kemitraan.
                 </p>
-
-                <ul className="space-y-2 pt-2 border-t border-slate-200 text-xs text-slate-700">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-blue-700"></span>
-                    <span>Catatan Tahunan (CATAHU) potret kerentanan PMI</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-blue-700"></span>
-                    <span>Kertas kebijakan evaluasi UU No. 18 Tahun 2017</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-blue-700"></span>
-                    <span>Penyusunan Amicus Curiae untuk preseden peradilan</span>
-                  </li>
-                </ul>
               </div>
 
-              <div className="pt-6 mt-6 border-t border-slate-200">
-                <Link href="/publikasi" className="text-xs font-bold text-brand-blue-900 flex items-center gap-1.5 hover:text-brand-blue-950">
-                  <span>Akses Repositori Publikasi</span>
+              <div className="pt-4 mt-4 border-t border-slate-200">
+                <Link href="/profil#profil" className="text-xs font-bold text-teal-800 flex items-center gap-1 hover:text-teal-900">
+                  <span>Program Komunitas</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>
 
-            {/* Mandat 3: Paralegal Komunitas */}
-            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-teal-600 transition-colors">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold">
-                  <Users className="w-6 h-6" />
+            {/* 3. Advokasi */}
+            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-emerald-600 transition-colors">
+              <div className="space-y-3">
+                <div className="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                  <Scale className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-extrabold text-slate-900">
-                  3. Penguatan Paralegal Desa
+                <h3 className="text-base font-extrabold text-slate-900">
+                  3. Advokasi
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Membangun ketahanan keluarga migran dan mencetak kader hukum komunitas sebagai garda terdepan sistem siaga dini di kantong asal.
+                  Advokasi peraturan perundang-undangan serta pendampingan langsung pengaduan kasus ketenagakerjaan buruh migran.
                 </p>
-
-                <ul className="space-y-2 pt-2 border-t border-slate-200 text-xs text-slate-700">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-700"></span>
-                    <span>Pelatihan verifikasi kontrak & legalitas agen P3MI</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-700"></span>
-                    <span>Posko rujukan pertama tingkat desa & kecamatan</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-700"></span>
-                    <span>Pemberdayaan ekonomi keluarga purna buruh migran</span>
-                  </li>
-                </ul>
               </div>
 
-              <div className="pt-6 mt-6 border-t border-slate-200">
-                <Link href="/profil" className="text-xs font-bold text-teal-800 flex items-center gap-1.5 hover:text-teal-900">
-                  <span>Profil & Wilayah Kerja</span>
+              <div className="pt-4 mt-4 border-t border-slate-200">
+                <Link href="/pengaduan" className="text-xs font-bold text-emerald-800 flex items-center gap-1 hover:text-emerald-900">
+                  <span>Layanan Pengaduan</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+
+            {/* 4. Media & Kampanye */}
+            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-amber-600 transition-colors">
+              <div className="space-y-3">
+                <div className="w-11 h-11 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center font-bold">
+                  <Megaphone className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-extrabold text-slate-900">
+                  4. Media & Kampanye
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Pengelolaan media komunikasi serta penyebarluasan informasi dan isu-isu penting migrasi sebagai rujukan masyarakat umum.
+                </p>
+              </div>
+
+              <div className="pt-4 mt-4 border-t border-slate-200">
+                <Link href="/#berita-terupdate" className="text-xs font-bold text-amber-800 flex items-center gap-1 hover:text-amber-900">
+                  <span>Warta & Informasi</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

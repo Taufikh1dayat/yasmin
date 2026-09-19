@@ -18,19 +18,19 @@ export default function HeroSection() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 lg:pt-24 lg:pb-28">
         <div className="max-w-3xl space-y-6">
           {/* Label Lembaga Resmi */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span>Lembaga Bantuan Hukum & Advokasi Hak Buruh Migran</span>
+            <span>Disahkan Kemenkumham RI 2021 • Lembaga Studi, Riset & Advokasi Buruh Migran</span>
           </div>
 
-          {/* Judul Utama yang Kuat & Lugas (Tanpa Teks Pelangi AI) */}
+          {/* Judul Utama yang Kuat & Lugas */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-            Pendampingan Hukum & Pembelaan Hak Pekerja Migran Indonesia
+            Pelindungan, Riset Kebijakan & Kedaulatan Buruh Migran
           </h1>
 
           {/* Penjelasan Ringkas & Humanis */}
           <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl font-normal">
-            Yayasan Studi Migran Indonesia (YASMIN) menyelenggarakan bantuan hukum cuma-cuma (*pro bono*), advokasi kebijakan ketenagakerjaan, serta penguatan posko perlindungan bagi PMI dan keluarga di daerah asal maupun negara penempatan.
+            Yayasan Studi Migran Indonesia (YASMIN) didirikan oleh sekelompok aktivis dan purna buruh migran untuk mempengaruhi perubahan kebijakan, menyelenggarakan bantuan hukum pro bono, pemberdayaan komunitas, serta penelitian situasi migrasi ketenagakerjaan.
           </p>
 
           {/* Tombol Aksi Utama */}

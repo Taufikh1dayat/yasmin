@@ -83,7 +83,8 @@ export default function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -163,13 +164,13 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Main Navigation Header */}
+      {/* Main Navigation Header: Basis Putih dengan Efek Frosted Blur */}
       <header 
         ref={navContainerRef}
-        className={`sticky top-0 z-50 transition-all duration-300 ${
+        className={`sticky top-0 z-50 transition-all duration-300 border-b backdrop-blur-md ${
           isScrolled 
-            ? 'bg-white/98 backdrop-blur-md shadow-md py-3' 
-            : 'bg-white shadow-sm py-4'
+            ? 'bg-white/90 shadow-md border-slate-200/80 py-3' 
+            : 'bg-white/95 shadow-sm border-slate-100 py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -197,8 +198,8 @@ export default function Navbar() {
                       href={item.href}
                       className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
                         isActive
-                          ? 'text-brand-green-700 bg-brand-green-50'
-                          : 'text-slate-700 hover:text-brand-blue-900 hover:bg-slate-100'
+                          ? 'text-brand-green-700 bg-brand-green-50 font-bold'
+                          : 'text-slate-700 hover:text-brand-blue-900 hover:bg-slate-100/80'
                       }`}
                     >
                       {item.name}
@@ -218,8 +219,8 @@ export default function Navbar() {
                       onClick={() => toggleDropdown(item.name)}
                       className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
                         isDropdownOpen
-                          ? 'text-brand-green-800 bg-slate-100/90'
-                          : 'text-slate-700 hover:text-brand-blue-900 hover:bg-slate-100'
+                          ? 'text-brand-green-800 bg-slate-100/90 font-bold'
+                          : 'text-slate-700 hover:text-brand-blue-900 hover:bg-slate-100/80'
                       }`}
                       aria-expanded={isDropdownOpen}
                     >
@@ -238,7 +239,7 @@ export default function Navbar() {
                         onMouseEnter={() => handleMouseEnter(item.name)}
                         onMouseLeave={handleMouseLeave}
                       >
-                        <div className="w-60 bg-white rounded-xl shadow-xl border border-slate-200/90 py-2.5 px-1.5">
+                        <div className="w-60 bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-slate-200/90 py-2.5 px-1.5">
                           {item.children?.map((subItem) => (
                             <Link
                               key={subItem.name}
@@ -292,7 +293,7 @@ export default function Navbar() {
 
         {/* Mobile Dropdown Menu */}
         {isOpen && (
-          <div className="lg:hidden bg-white border-t border-slate-100 shadow-xl px-4 pt-3 pb-6 space-y-1.5 max-h-[85vh] overflow-y-auto">
+          <div className="lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-xl px-4 pt-3 pb-6 space-y-1.5 max-h-[85vh] overflow-y-auto">
             {navItems.map((item) => {
               const hasChildren = Boolean(item.children && item.children.length > 0);
               const isExpanded = mobileExpanded === item.name;

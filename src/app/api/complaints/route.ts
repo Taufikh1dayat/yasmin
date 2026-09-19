@@ -74,39 +74,127 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const ticket = searchParams.get('ticket');
 
-    if (!ticket) {
-      return NextResponse.json({ error: 'Kode tiket harus disertakan' }, { status: 400 });
+    // Jika parameter ticket diberikan, cari spesifik (untuk fitur lacak publik)
+    if (ticket) {
+      const complaint = await prisma.complaint.findUnique({
+        where: { ticketCode: ticket.trim().toUpperCase() },
+        include: {
+          branch: {
+            select: {
+              name: true,
+              city: true,
+              hotline: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+      if (!complaint) {
+        return NextResponse.json({ error: 'Tiket pengaduan tidak ditemukan. Mohon periksa kembali kode tiket Anda.' }, { status: 404 });
+      }
+
+      // Mask nomor kontak demi privasi pelapor publik
+      const maskedContact = complaint.contact.length > 5 
+        ? complaint.contact.substring(0, 4) + '****' + complaint.contact.substring(complaint.contact.length - 2)
+        : '****';
+
+      return NextResponse.json({
+        ...complaint,
+        contact: maskedContact,
+      });
     }
 
-    const complaint = await prisma.complaint.findUnique({
-      where: { ticketCode: ticket.trim().toUpperCase() },
+    // Jika tanpa parameter ticket, kembalikan seluruh daftar untuk Admin Manajemen Kasus
+    const status = searchParams.get('status');
+    const search = searchParams.get('search');
+
+    const where: any = {};
+    if (status && status !== 'Semua') {
+      where.status = status;
+    }
+    if (search) {
+      where.OR = [
+        { ticketCode: { contains: search, mode: 'insensitive' } },
+        { complainantName: { contains: search, mode: 'insensitive' } },
+        { workerLocation: { contains: search, mode: 'insensitive' } },
+        { category: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    const complaints = await prisma.complaint.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
       include: {
         branch: {
           select: {
+            id: true,
             name: true,
             city: true,
-            hotline: true,
-            email: true,
+            province: true,
           },
         },
       },
     });
 
-    if (!complaint) {
-      return NextResponse.json({ error: 'Tiket pengaduan tidak ditemukan. Mohon periksa kembali kode tiket Anda.' }, { status: 404 });
+    return NextResponse.json(complaints);
+  } catch (error) {
+    console.error('Error fetching complaints:', error);
+    return NextResponse.json({ error: 'Gagal memuat data pengaduan' }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, status, adminNotes, branchId } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID pengaduan diperlukan' }, { status: 400 });
     }
 
-    // Mask nomor kontak demi privasi pelapor
-    const maskedContact = complaint.contact.length > 5 
-      ? complaint.contact.substring(0, 4) + '****' + complaint.contact.substring(complaint.contact.length - 2)
-      : '****';
+    const updateData: any = {};
+    if (status) updateData.status = status;
+    if (adminNotes !== undefined) updateData.adminNotes = adminNotes;
+    if (branchId !== undefined) updateData.branchId = branchId || null;
 
-    return NextResponse.json({
-      ...complaint,
-      contact: maskedContact,
+    const updated = await prisma.complaint.update({
+      where: { id },
+      data: updateData,
+      include: {
+        branch: {
+          select: {
+            id: true,
+            name: true,
+            city: true,
+          },
+        },
+      },
     });
+
+    return NextResponse.json({ success: true, complaint: updated });
   } catch (error) {
-    console.error('Error fetching complaint ticket:', error);
-    return NextResponse.json({ error: 'Gagal melacak tiket' }, { status: 500 });
+    console.error('Error updating complaint:', error);
+    return NextResponse.json({ error: 'Gagal memperbarui status pengaduan' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID pengaduan diperlukan' }, { status: 400 });
+    }
+
+    await prisma.complaint.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting complaint:', error);
+    return NextResponse.json({ error: 'Gagal menghapus pengaduan' }, { status: 500 });
   }
 }

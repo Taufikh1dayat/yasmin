@@ -38,12 +38,19 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     }
   };
 
-  const navItems = [
+  interface NavItem {
+    name: string;
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+    badge?: string;
+  }
+
+  const navItems: NavItem[] = [
     { name: 'Ringkasan Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: 'Manajemen Pengaduan', href: '/admin/pengaduan', icon: Inbox, badge: 'Phase 3' },
-    { name: 'Katalog Publikasi', href: '/admin/publikasi', icon: FileText, badge: 'Phase 4' },
-    { name: 'Warta & Berita', href: '/admin/berita', icon: Newspaper, badge: 'Phase 4' },
-    { name: 'Kantor Helpdesk', href: '/admin/cabang', icon: Building2, badge: 'Phase 4' },
+    { name: 'Manajemen Pengaduan', href: '/admin/pengaduan', icon: Inbox },
+    { name: 'Warta & Berita', href: '/admin/berita', icon: Newspaper },
+    { name: 'Katalog Publikasi', href: '/admin/publikasi', icon: FileText },
+    { name: 'Kantor Helpdesk', href: '/admin/cabang', icon: Building2 },
   ];
 
   return (

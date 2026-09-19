@@ -127,9 +127,13 @@ export default async function AdminDashboardPage() {
               Laporan aduan masyarakat yang baru masuk dan menunggu tindakan tim advokasi.
             </p>
           </div>
-          <div className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
-            Fase 3: Tabel Interaktif Lengkap
-          </div>
+          <Link
+            href="/admin/pengaduan"
+            className="text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1.5 transition-colors"
+          >
+            <span>Buka Semua Kasus</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
         <div className="overflow-x-auto">
@@ -196,27 +200,39 @@ export default async function AdminDashboardPage() {
 
       {/* Ringkasan Data Master Lainnya */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <Link 
+          href="/admin/cabang" 
+          className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-brand-blue-500/60 hover:shadow-md transition-all group"
+        >
           <div className="space-y-1">
-            <span className="text-xs font-bold text-slate-500 uppercase">Kantor Helpdesk</span>
+            <span className="text-xs font-bold text-slate-500 uppercase flex items-center gap-1">
+              <span>Kantor Helpdesk</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 transition-transform" />
+            </span>
             <div className="text-2xl font-black text-slate-900">{totalBranches} Wilayah Aktif</div>
             <p className="text-xs text-slate-400">Tersebar di kantong migran & koridor perbatasan</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-blue-50 text-brand-blue-800 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-blue-50 text-brand-blue-800 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
             <Building2 className="w-6 h-6" />
           </div>
-        </div>
+        </Link>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <Link 
+          href="/admin/publikasi" 
+          className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-emerald-500/60 hover:shadow-md transition-all group"
+        >
           <div className="space-y-1">
-            <span className="text-xs font-bold text-slate-500 uppercase">Repositori Dokumen</span>
+            <span className="text-xs font-bold text-slate-500 uppercase flex items-center gap-1">
+              <span>Repositori Dokumen</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 transition-transform" />
+            </span>
             <div className="text-2xl font-black text-slate-900">{totalPublications} Publikasi & CATAHU</div>
             <p className="text-xs text-slate-400">Kertas kebijakan & riset hukum ketenagakerjaan</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-100 transition-colors">
             <FileText className="w-6 h-6" />
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
