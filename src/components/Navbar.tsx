@@ -7,9 +7,10 @@ import {
   Menu, 
   X, 
   PhoneCall, 
-  Send,
-  ChevronDown,
-  Heart
+  Send, 
+  ChevronDown, 
+  Heart,
+  ShieldCheck
 } from 'lucide-react';
 import DonationModal from './DonationModal';
 
@@ -75,9 +76,25 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [isDonationOpen, setIsDonationOpen] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const pathname = usePathname();
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const navContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Periksa apakah ada sesi admin aktif
+  useEffect(() => {
+    fetch('/api/admin/change-password')
+      .then((res) => {
+        if (res.ok) setIsAdminLoggedIn(true);
+        else setIsAdminLoggedIn(false);
+      })
+      .catch(() => setIsAdminLoggedIn(false));
+  }, [pathname]);
+
+  // Sembunyikan navbar publik di seluruh rute admin
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -260,12 +277,23 @@ export default function Navbar() {
 
             {/* Right Action Buttons: Donasi & Laporkan Kasus */}
             <div className="hidden lg:flex items-center gap-2.5">
+              {isAdminLoggedIn && (
+                <Link
+                  href="/admin/dashboard"
+                  className="bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-slate-700 px-3 py-2 rounded-lg text-xs font-bold shadow-sm transition-all flex items-center gap-1.5"
+                  title="Kembali ke Panel Admin"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Panel Admin</span>
+                </Link>
+              )}
+
               <button
                 type="button"
                 onClick={() => setIsDonationOpen(true)}
-                className="bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white px-3.5 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:shadow-md transition-all flex items-center gap-1.5"
+                className="bg-gradient-to-r from-amber-500 via-amber-600 to-orange-500 hover:from-amber-600 hover:via-amber-700 hover:to-orange-600 text-white px-3.5 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:shadow-md transition-all flex items-center gap-1.5"
               >
-                <Heart className="w-4 h-4 fill-white/80" />
+                <Heart className="w-4 h-4 fill-white/90 text-white" />
                 <span>Donasi</span>
               </button>
 
@@ -347,9 +375,9 @@ export default function Navbar() {
                   setIsOpen(false);
                   setIsDonationOpen(true);
                 }}
-                className="w-full bg-gradient-to-r from-rose-500 to-amber-500 text-white px-3 py-2.5 rounded-lg text-center font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow"
+                className="w-full bg-gradient-to-r from-amber-500 via-amber-600 to-orange-500 hover:from-amber-600 hover:via-amber-700 hover:to-orange-600 text-white px-3 py-2.5 rounded-lg text-center font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow"
               >
-                <Heart className="w-4 h-4 fill-white/80" />
+                <Heart className="w-4 h-4 fill-white/90 text-white" />
                 <span>Donasi</span>
               </button>
 
@@ -362,6 +390,19 @@ export default function Navbar() {
                 <span>Laporkan</span>
               </Link>
             </div>
+
+            {isAdminLoggedIn && (
+              <div className="pt-2">
+                <Link
+                  href="/admin/dashboard"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full bg-slate-900 text-emerald-400 border border-slate-700 px-3 py-2.5 rounded-lg text-center font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm"
+                >
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span>Kembali ke Panel Admin</span>
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </header>

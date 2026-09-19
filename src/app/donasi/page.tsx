@@ -46,8 +46,8 @@ export default function DonationPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Header */}
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200">
-            <Heart className="w-3.5 h-3.5 fill-rose-600 text-rose-600" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-50 text-amber-800 text-xs font-bold border border-amber-200/90">
+            <Heart className="w-3.5 h-3.5 fill-amber-500 text-amber-600" />
             <span>Solidaritas Kemanusiaan & Bantuan Hukum</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
@@ -61,7 +61,7 @@ export default function DonationPage() {
         {/* 3 Pilar Pemanfaatan Donasi */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center">
               <Scale className="w-6 h-6" />
             </div>
             <h2 className="text-lg font-bold text-slate-900">Bantuan Hukum Pro Bono</h2>

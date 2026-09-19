@@ -2,9 +2,17 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Scale, Phone, Mail, MapPin, ShieldCheck, HeartHandshake, FileText, ArrowUpRight, Lock } from 'lucide-react';
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Jangan render footer publik di seluruh rute admin
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <footer className="bg-slate-900 text-slate-300 pt-16 pb-12 border-t-4 border-brand-green-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -135,7 +143,7 @@ export default function Footer() {
             <Link href="/profil" className="hover:text-slate-400">Kode Etik Advokasi</Link>
             <Link href="/profil" className="hover:text-slate-400">Kebijakan Privasi</Link>
             <Link href="/pengaduan" className="hover:text-slate-400">SOP Pelaporan</Link>
-            <Link href="/admin/login" className="text-slate-500 hover:text-emerald-400 transition-colors flex items-center gap-1 font-semibold">
+            <Link href="/admin/dashboard" className="text-slate-500 hover:text-emerald-400 transition-colors flex items-center gap-1 font-semibold">
               <Lock className="w-3 h-3" />
               <span>Portal Admin</span>
             </Link>

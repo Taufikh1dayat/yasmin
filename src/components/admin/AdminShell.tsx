@@ -15,7 +15,8 @@ import {
   User, 
   ShieldAlert,
   Inbox,
-  Scale
+  Scale,
+  Settings
 } from 'lucide-react';
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
@@ -51,6 +52,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     { name: 'Warta & Berita', href: '/admin/berita', icon: Newspaper },
     { name: 'Katalog Publikasi', href: '/admin/publikasi', icon: FileText },
     { name: 'Kantor Helpdesk', href: '/admin/cabang', icon: Building2 },
+    { name: 'Pengaturan & Akun', href: '/admin/pengaturan', icon: Settings },
   ];
 
   return (
@@ -118,15 +120,20 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
         {/* User Info & Actions Bottom */}
         <div className="pt-6 border-t border-slate-800 space-y-3">
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-800/80">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
+          <Link 
+            href="/admin/pengaturan"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 transition-colors group cursor-pointer"
+            title="Kelola Akun & Kata Sandi"
+          >
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500/30 flex items-center justify-center font-bold text-xs transition-colors">
               <User className="w-4 h-4" />
             </div>
-            <div className="truncate text-xs">
-              <span className="text-white font-bold block truncate">Admin YASMIN</span>
+            <div className="truncate text-xs flex-1">
+              <span className="text-white font-bold block truncate group-hover:text-emerald-300 transition-colors">Admin YASMIN</span>
               <span className="text-slate-400 text-[10px] truncate block">admin@yasmin.or.id</span>
             </div>
-          </div>
+            <Settings className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
+          </Link>
 
           <div className="grid grid-cols-2 gap-2">
             <Link

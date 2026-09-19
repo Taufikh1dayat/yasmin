@@ -20,20 +20,52 @@
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar: Ramping, halus, dan elegan */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #0d9488;
-  border-radius: 4px;
+  background: #cbd5e1;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0f766e;
+  background: #94a3b8;
+}
+
+/* Utilitas scrollbar khusus untuk modal: Ringan, responsif, tanpa delay */
+.modal-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: auto !important;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.modal-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.modal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Sembunyikan scrollbar tanpa mematikan fungsi scroll */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Custom pulse animations */

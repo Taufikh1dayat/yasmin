@@ -196,72 +196,100 @@ export default function ArticlesSection({ articles = DEFAULT_ARTICLES }: { artic
           ))}
         </div>
 
-        {/* MODAL BACA SIARAN PERS LENGKAP */}
+        {/* MODAL BACA SIARAN PERS LENGKAP (Clean & Elegan Tanpa Efek Scroll Kasar) */}
         {selectedArticle && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-6">
-              <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
-                <div>
-                  <span className="px-2.5 py-1 rounded text-[10px] font-bold tracking-wider uppercase bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    {selectedArticle.category}
-                  </span>
-                  {selectedArticle.dispatchNo && (
-                    <span className="text-xs font-mono text-slate-400 ml-2">
-                      No: {selectedArticle.dispatchNo}
+          <div 
+            onClick={() => setSelectedArticle(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 animate-in fade-in duration-150"
+            style={{ overscrollBehavior: 'contain' }}
+          >
+            <div 
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in zoom-in-95 duration-150 transform-gpu"
+            >
+              {/* Header Modal - Tetap di Atas (Fixed) */}
+              <div className="p-6 sm:p-8 border-b border-slate-100 flex items-start justify-between gap-6 flex-shrink-0 bg-white">
+                <div className="space-y-2 max-w-3xl">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-1 rounded text-[10px] font-bold tracking-wider uppercase bg-emerald-100 text-emerald-800 border border-emerald-200">
+                      {selectedArticle.category}
                     </span>
-                  )}
-                  <h3 className="text-xl font-black text-slate-900 mt-2 leading-tight">
+                    {selectedArticle.dispatchNo && (
+                      <span className="text-xs font-mono text-slate-400">
+                        No: {selectedArticle.dispatchNo}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
                     {selectedArticle.title}
                   </h3>
-                  <div className="flex items-center gap-3 text-xs text-slate-500 mt-2">
-                    <span>{new Date(selectedArticle.publishedAt).toLocaleDateString('id-ID', { dateStyle: 'full' })}</span>
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-slate-500">
+                    <span className="font-medium">
+                      {new Date(selectedArticle.publishedAt).toLocaleDateString('id-ID', { dateStyle: 'full' })}
+                    </span>
                     <span>•</span>
-                    <span>{selectedArticle.author}</span>
+                    <span className="font-semibold text-slate-700">{selectedArticle.author}</span>
+                    {selectedArticle.locationTag && (
+                      <>
+                        <span>•</span>
+                        <span className="flex items-center gap-1 text-emerald-700 font-semibold">
+                          <MapPin className="w-3.5 h-3.5" />
+                          <span>{selectedArticle.locationTag}</span>
+                        </span>
+                      </>
+                    )}
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedArticle(null)}
-                  className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+                  className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors flex-shrink-0"
                   aria-label="Tutup"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Gambar Berita di Modal Baca */}
-              {selectedArticle.imageUrl && (
-                <div className="relative h-60 w-full rounded-2xl overflow-hidden shadow-sm bg-slate-100">
-                  <img
-                    src={selectedArticle.imageUrl}
-                    alt={selectedArticle.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
-                  {selectedArticle.locationTag && (
-                    <div className="absolute bottom-3 left-3 text-xs font-bold text-white px-3 py-1 rounded-lg bg-slate-900/80 backdrop-blur-sm shadow flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>{selectedArticle.locationTag}</span>
-                    </div>
-                  )}
-                </div>
-              )}
+              {/* Konten Scrollable - Luas, Ringan & Nyaman Dibaca */}
+              <div 
+                className="p-6 sm:p-8 overflow-y-auto flex-1 space-y-6 modal-scroll"
+                style={{ willChange: 'scroll-position' }}
+              >
+                {/* Gambar Berita di Modal Baca */}
+                {selectedArticle.imageUrl && (
+                  <div className="relative h-64 sm:h-80 md:h-96 w-full rounded-2xl overflow-hidden shadow-sm bg-slate-100 flex-shrink-0">
+                    <img
+                      src={selectedArticle.imageUrl}
+                      alt={selectedArticle.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
+                    {selectedArticle.locationTag && (
+                      <div className="absolute bottom-4 left-4 text-xs font-bold text-white px-3.5 py-1.5 rounded-xl bg-slate-900/80 backdrop-blur-sm shadow flex items-center gap-1.5">
+                        <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>{selectedArticle.locationTag}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
 
-              <div className="prose prose-sm text-slate-700 leading-relaxed space-y-4">
-                <p className="font-semibold text-slate-900 border-l-4 border-emerald-600 pl-3 italic text-xs sm:text-sm">
-                  {selectedArticle.excerpt}
-                </p>
-                <div className="whitespace-pre-line text-xs sm:text-sm">
-                  {selectedArticle.content || selectedArticle.excerpt}
+                <div className="space-y-4 max-w-none text-slate-700 leading-relaxed">
+                  <div className="p-4 rounded-xl bg-emerald-50/60 border-l-4 border-emerald-600 font-medium text-slate-900 text-sm sm:text-base leading-relaxed">
+                    {selectedArticle.excerpt}
+                  </div>
+                  <div className="whitespace-pre-line text-sm sm:text-base leading-relaxed text-slate-800 space-y-3">
+                    {selectedArticle.content || selectedArticle.excerpt}
+                  </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="text-slate-400">
-                  Yayasan Studi Migran Indonesia (YASMIN)
+              {/* Footer Modal - Tetap di Bawah (Fixed) */}
+              <div className="p-4 sm:px-8 border-t border-slate-100 bg-slate-50/80 flex items-center justify-between text-xs flex-shrink-0 rounded-b-3xl">
+                <span className="text-slate-500 font-medium">
+                  Yayasan Studi Migran Indonesia (YASMIN) • Rilis Advokasi Resmi
                 </span>
                 <button
                   onClick={() => setSelectedArticle(null)}
-                  className="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800"
+                  className="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors shadow-sm"
                 >
                   Tutup Rilis
                 </button>

@@ -10,11 +10,22 @@ export default function AdminLoginPage() {
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get('redirect') || '/admin/dashboard';
 
-  const [email, setEmail] = useState('admin@yasmin.or.id');
-  const [password, setPassword] = useState('admin123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Jika sudah memiliki sesi login aktif, otomatis alihkan ke dashboard
+  React.useEffect(() => {
+    fetch('/api/admin/change-password')
+      .then((res) => {
+        if (res.ok) {
+          router.replace(redirectUrl);
+        }
+      })
+      .catch(() => {});
+  }, [redirectUrl, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,15 +150,10 @@ export default function AdminLoginPage() {
               </div>
             </form>
 
-            {/* Hint Akun Default */}
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-1">
-              <span className="font-bold text-slate-800 block">Kredensial Default Pengujian:</span>
-              <div className="font-mono text-emerald-800">
-                Email: <strong>admin@yasmin.or.id</strong>
-              </div>
-              <div className="font-mono text-emerald-800">
-                Password: <strong>admin123456</strong>
-              </div>
+            {/* Security Notice */}
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-500 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <span>Akses terenkripsi khusus staf & pengurus resmi YASMIN.</span>
             </div>
 
             {/* Back to Public Web Link */}
