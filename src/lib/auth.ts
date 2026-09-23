@@ -46,4 +46,13 @@ export function getCurrentAdminSession() {
   return verifySessionToken(token);
 }
 
+// Validasi bahwa sesi admin berstatus aktif dan memiliki hak akses SUPER_ADMIN
+export function requireSuperAdminSession() {
+  const session = getCurrentAdminSession();
+  if (!session || session.role !== 'SUPER_ADMIN') {
+    return null;
+  }
+  return session;
+}
+
 export { SESSION_COOKIE_NAME };

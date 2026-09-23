@@ -151,7 +151,7 @@ export default async function HomePage() {
       <ArticlesSection articles={articles.length > 0 ? articles : undefined} />
 
       {/* 4. Peta Interaktif Sebaran Cabang */}
-      <InteractiveMap />
+      <InteractiveMap branches={branches.length > 0 ? branches : undefined} />
 
       {/* 5. Layanan Pengaduan Kasus Online & Live Ticket Tracking */}
       <ComplaintSection branches={branches} />

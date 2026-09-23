@@ -20,7 +20,7 @@ export default async function CabangPage() {
     <div className="bg-slate-50 min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Peta Interaktif */}
-        <InteractiveMap />
+        <InteractiveMap branches={branches.length > 0 ? branches : undefined} />
 
         {/* Tabel / Grid Lengkap Direktori Cabang */}
         <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6">

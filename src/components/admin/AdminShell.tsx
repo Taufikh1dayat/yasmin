@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
@@ -16,15 +16,41 @@ import {
   ShieldAlert,
   Inbox,
   Scale,
-  Settings
+  Settings,
+  Users,
+  ShieldCheck
 } from 'lucide-react';
+
+interface CurrentUser {
+  id: string;
+  name: string;
+  email: string;
+  role: 'SUPER_ADMIN' | 'LEGAL_STAFF';
+}
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
 
-  // Jika sedang di halaman login, tampilkan tanpa shell sidebar
+  useEffect(() => {
+    if (pathname === '/admin/login') return;
+    let isMounted = true;
+    fetch('/api/admin/change-password')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (isMounted && data?.user) {
+          setCurrentUser(data.user);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      isMounted = false;
+    };
+  }, [pathname]);
+
+  // Jika sedang di halaman login, tampilkan tanpa shell sidebar (setelah seluruh hooks terdefinisi)
   if (pathname === '/admin/login') {
     return <>{children}</>;
   }
@@ -52,6 +78,9 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     { name: 'Warta & Berita', href: '/admin/berita', icon: Newspaper },
     { name: 'Katalog Publikasi', href: '/admin/publikasi', icon: FileText },
     { name: 'Kantor Helpdesk', href: '/admin/cabang', icon: Building2 },
+    ...(currentUser?.role === 'SUPER_ADMIN'
+      ? [{ name: 'Kelola Pengguna', href: '/admin/pengguna', icon: Users, badge: 'Super' }]
+      : []),
     { name: 'Pengaturan & Akun', href: '/admin/pengaturan', icon: Settings },
   ];
 
@@ -122,17 +151,32 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         <div className="pt-6 border-t border-slate-800 space-y-3">
           <Link 
             href="/admin/pengaturan"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 transition-colors group cursor-pointer"
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 transition-colors group cursor-pointer"
             title="Kelola Akun & Kata Sandi"
           >
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500/30 flex items-center justify-center font-bold text-xs transition-colors">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500/30 flex items-center justify-center font-bold text-xs transition-colors shrink-0">
               <User className="w-4 h-4" />
             </div>
-            <div className="truncate text-xs flex-1">
-              <span className="text-white font-bold block truncate group-hover:text-emerald-300 transition-colors">Admin YASMIN</span>
-              <span className="text-slate-400 text-[10px] truncate block">admin@yasmin.or.id</span>
+            <div className="truncate text-xs flex-1 min-w-0">
+              <span className="text-white font-bold block truncate group-hover:text-emerald-300 transition-colors">
+                {currentUser?.name || 'Admin YASMIN'}
+              </span>
+              <span className="text-slate-400 text-[10px] truncate block">
+                {currentUser?.email || 'admin@yasmin.or.id'}
+              </span>
+              <div className="mt-1">
+                {currentUser?.role === 'SUPER_ADMIN' ? (
+                  <span className="inline-flex items-center gap-1 text-[9px] font-semibold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <ShieldCheck className="w-2.5 h-2.5" /> Super Admin
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 text-[9px] font-semibold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                    Staf Advokasi
+                  </span>
+                )}
+              </div>
             </div>
-            <Settings className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
+            <Settings className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 transition-colors shrink-0" />
           </Link>
 
           <div className="grid grid-cols-2 gap-2">

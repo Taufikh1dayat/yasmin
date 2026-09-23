@@ -91,22 +91,19 @@ export default function Navbar() {
       .catch(() => setIsAdminLoggedIn(false));
   }, [pathname]);
 
-  // Sembunyikan navbar publik di seluruh rute admin
-  if (pathname?.startsWith('/admin')) {
-    return null;
-  }
-
   useEffect(() => {
+    if (pathname?.startsWith('/admin')) return;
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [pathname]);
 
   // Tutup dropdown jika klik di luar navbar atau tekan Escape
   useEffect(() => {
+    if (pathname?.startsWith('/admin')) return;
     const handleClickOutside = (e: MouseEvent) => {
       if (navContainerRef.current && !navContainerRef.current.contains(e.target as Node)) {
         setActiveDropdown(null);
@@ -124,7 +121,7 @@ export default function Navbar() {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [pathname]);
 
   const handleMouseEnter = (name: string) => {
     if (closeTimeoutRef.current) {
@@ -147,6 +144,11 @@ export default function Navbar() {
   const toggleMobileSubmenu = (name: string) => {
     setMobileExpanded((prev) => (prev === name ? null : name));
   };
+
+  // Sembunyikan navbar publik di seluruh rute admin (setelah semua hooks dipanggil)
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <>
