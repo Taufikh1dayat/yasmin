@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getCurrentAdminSession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +31,19 @@ export async function POST(request: Request) {
     if (!contact || !category || !chronology) {
       return NextResponse.json(
         { error: 'Kontak, kategori masalah, dan kronologi wajib diisi.' },
+        { status: 400 }
+      );
+    }
+
+    if (
+      contact.length > 50 || 
+      (complainantName && complainantName.length > 150) || 
+      chronology.length > 10000 ||
+      (email && email.length > 150) ||
+      (workerLocation && workerLocation.length > 150)
+    ) {
+      return NextResponse.json(
+        { error: 'Ukuran input teks melebihi batas wajar.' },
         { status: 400 }
       );
     }
@@ -105,7 +119,15 @@ export async function GET(request: Request) {
       });
     }
 
-    // Jika tanpa parameter ticket, kembalikan seluruh daftar untuk Admin Manajemen Kasus
+    // Jika tanpa parameter ticket, kembalikan seluruh daftar khusus untuk Admin Manajemen Kasus
+    const session = getCurrentAdminSession();
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Sesi Anda telah berakhir atau Anda tidak memiliki akses ke data internal.' },
+        { status: 401 }
+      );
+    }
+
     const status = searchParams.get('status');
     const search = searchParams.get('search');
 
@@ -146,6 +168,14 @@ export async function GET(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
+    const session = getCurrentAdminSession();
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Sesi Anda telah berakhir atau Anda tidak memiliki akses admin.' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const { id, status, adminNotes, branchId } = body;
 
@@ -181,6 +211,14 @@ export async function PATCH(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    const session = getCurrentAdminSession();
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Sesi Anda telah berakhir atau Anda tidak memiliki akses admin.' },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 

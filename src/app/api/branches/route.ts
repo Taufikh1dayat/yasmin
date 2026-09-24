@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getCurrentAdminSession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,6 +25,14 @@ export async function GET(request: Request) {
 // POST: Tambah posko cabang baru
 export async function POST(request: Request) {
   try {
+    const session = getCurrentAdminSession();
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Sesi Anda telah berakhir atau Anda tidak memiliki akses admin.' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const { 
       name, 
@@ -72,6 +81,14 @@ export async function POST(request: Request) {
 // PATCH: Perbarui data posko cabang
 export async function PATCH(request: Request) {
   try {
+    const session = getCurrentAdminSession();
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Sesi Anda telah berakhir atau Anda tidak memiliki akses admin.' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const { 
       id, 
@@ -119,6 +136,14 @@ export async function PATCH(request: Request) {
 // DELETE: Hapus posko cabang
 export async function DELETE(request: Request) {
   try {
+    const session = getCurrentAdminSession();
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Sesi Anda telah berakhir atau Anda tidak memiliki akses admin.' },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 
