@@ -188,18 +188,18 @@ export default function Navbar() {
         ref={navContainerRef}
         className={`sticky top-0 z-50 transition-all duration-300 border-b backdrop-blur-md ${
           isScrolled 
-            ? 'bg-white/90 shadow-md border-slate-200/80 py-3' 
-            : 'bg-white/95 shadow-sm border-slate-100 py-4'
+            ? 'bg-white/90 shadow-md border-slate-200/80 py-2 sm:py-3' 
+            : 'bg-white/95 shadow-sm border-slate-100 py-2 sm:py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo Resmi YASMIN */}
-            <Link href="/" className="flex items-center group py-1">
+            <Link href="/" className="flex items-center group py-0.5">
               <img
                 src="/images/yasmin_logo.png"
                 alt="YASMIN - Yayasan Studi Migran Indonesia"
-                className="h-14 sm:h-16 w-auto object-contain group-hover:scale-105 transition-transform"
+                className="h-10 sm:h-16 w-auto object-contain group-hover:scale-105 transition-transform"
               />
             </Link>
 

@@ -8,6 +8,7 @@ import {
   MessageCircle, 
   Search, 
   ChevronRight, 
+  ChevronLeft,
   Building2, 
   ExternalLink,
   X,
@@ -396,6 +397,21 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
 
   const activeCoord = getCoordinates(selectedBranch);
 
+  const currentIndex = branches.findIndex((b) => b.id === selectedBranch.id);
+  const safeIndex = currentIndex >= 0 ? currentIndex : 0;
+
+  const handlePrevBranch = () => {
+    const prevIdx = (safeIndex - 1 + branches.length) % branches.length;
+    setSelectedBranch(branches[prevIdx]);
+    setIsPopoverOpen(true);
+  };
+
+  const handleNextBranch = () => {
+    const nextIdx = (safeIndex + 1) % branches.length;
+    setSelectedBranch(branches[nextIdx]);
+    setIsPopoverOpen(true);
+  };
+
   const handleSelectBranch = (b: BranchItem) => {
     setSelectedBranch(b);
     setIsPopoverOpen(true);
@@ -411,32 +427,39 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
   };
 
   return (
-    <section id="posko-wilayah" className="py-16 sm:py-24 bg-[#1f0d38] text-white overflow-hidden relative border-t border-purple-900/40">
+    <section id="posko-wilayah" className="py-12 sm:py-24 bg-[#1f0d38] text-white overflow-hidden relative border-t border-purple-900/40">
       {/* Background Decorative Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-purple-600/10 blur-[130px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10">
-        {/* Title Header: Identik dengan Style Banner Peta */}
-        <div className="text-center max-w-4xl mx-auto space-y-3">
-          <span className="text-[11px] sm:text-xs font-black tracking-widest uppercase text-purple-300 bg-purple-900/60 px-3.5 py-1 rounded-full border border-purple-500/30 inline-flex items-center gap-1.5">
-            <Compass className="w-3.5 h-3.5 text-pink-400" />
-            <span>JARINGAN KERJA LAPANGAN & ADVOKASI HUKUM</span>
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10 space-y-6 sm:space-y-10">
+        {/* Title Header */}
+        <div className="text-center max-w-4xl mx-auto space-y-2 sm:space-y-3 px-2">
+          <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase text-purple-300 bg-purple-900/60 px-3 py-1 rounded-full border border-purple-500/30 inline-flex items-center gap-1.5 shadow-sm">
+            <Compass className="w-3.5 h-3.5 text-pink-400 shrink-0" />
+            <span>JARINGAN KERJA LAPANGAN & ADVOKASI</span>
           </span>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white drop-shadow-md">
-            {branches.length} KANTOR HELPDESK & POSKO YASMIN DI INDONESIA
+          <h2 className="text-xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tight text-white drop-shadow-md leading-tight">
+            {branches.length} Kantor Helpdesk & Posko YASMIN di Indonesia
           </h2>
           <p className="text-xs sm:text-sm text-purple-200/80 max-w-2xl mx-auto leading-relaxed">
-            Klik atau arahkan kursor ke titik posko pada peta di bawah ini untuk melihat sekretariat posko, kontak hotline darurat, serta rujukan bantuan hukum setempat.
+            Klik atau sentuh titik posko pada peta di bawah ini untuk melihat sekretariat posko, kontak hotline darurat, serta rujukan bantuan hukum setempat.
           </p>
         </div>
 
         {/* CONTAINER PETA INTERAKTIF INDONESIA */}
         <div 
           id="peta-interaktif-indonesia"
-          className="relative w-full rounded-3xl bg-gradient-to-b from-[#250f45] via-[#1f0c3a] to-[#18082e] border border-purple-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden"
+          className="relative w-full rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#250f45] via-[#1f0c3a] to-[#18082e] border border-purple-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden"
         >
           {/* Peta Background & Pinpoints Container */}
-          <div className="relative w-full aspect-[2021/922] min-h-[320px] sm:min-h-[460px] md:min-h-[580px] select-none flex items-center justify-center p-2 sm:p-6">
+          <div className="relative w-full aspect-[2021/922] min-h-[220px] sm:min-h-[460px] md:min-h-[580px] select-none flex items-center justify-center p-2 sm:p-6 overflow-hidden">
+            {/* Petunjuk sentuh di mobile */}
+            <div className="sm:hidden absolute top-2.5 left-3 z-10 pointer-events-none">
+              <span className="text-[10px] font-semibold text-purple-300/90 bg-purple-950/80 px-2.5 py-1 rounded-full border border-purple-500/30 backdrop-blur-sm shadow-sm">
+                Sentuh titik pulau untuk melihat posko
+              </span>
+            </div>
+
             {/* Gambar Siluet Putih Peta Indonesia (Inline SVG Vektor Bebas Error) */}
             <svg
               viewBox="0 0 2021 922"
@@ -463,45 +486,35 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
                   onClick={() => handleSelectBranch(b)}
                   onMouseEnter={() => handleSelectBranch(b)}
                   aria-label={b.name}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group focus:outline-none"
+                  className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group focus:outline-none p-2 sm:p-1"
                   style={{
                     left: `${coord.x}%`,
                     top: `${coord.y}%`,
                   }}
                 >
                   {/* Ping animasi */}
-                  <span className={`absolute -inset-1.5 rounded-full bg-pink-400 opacity-75 group-hover:opacity-100 ${
+                  <span className={`absolute inset-0.5 rounded-full bg-pink-400 opacity-75 group-hover:opacity-100 ${
                     isSelected ? 'animate-ping opacity-90' : 'animate-pulse'
                   }`} />
                   
                   {/* Dot Utama */}
                   <span className={`relative block rounded-full transition-all duration-200 border-2 ${
                     isSelected 
-                      ? 'w-4 h-4 sm:w-5 sm:h-5 bg-pink-300 border-white shadow-[0_0_15px_#f472b6] scale-125' 
-                      : 'w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-pink-400 border-white/90 shadow-md group-hover:scale-125 group-hover:bg-pink-300'
+                      ? 'w-3.5 h-3.5 sm:w-5 sm:h-5 bg-pink-300 border-white shadow-[0_0_15px_#f472b6] scale-125' 
+                      : 'w-2 h-2 sm:w-3.5 sm:h-3.5 bg-pink-400 border-white/90 shadow-md group-hover:scale-125 group-hover:bg-pink-300'
                   }`} />
                 </button>
               );
             })}
 
-            {/* KARTU POPOVER KONTOR TERPILIH (Floating Info Card) */}
+            {/* KARTU POPOVER KANTOR TERPILIH - KHUSUS DESKTOP (Floating Info Card) */}
             {isPopoverOpen && selectedBranch && (
               <div 
-                className={`
-                  z-30 p-5 rounded-2xl bg-[#2a1048]/95 backdrop-blur-md border border-purple-400/40 text-white shadow-[0_20px_50px_rgba(0,0,0,0.7)] transition-all animate-in fade-in duration-200
-                  max-sm:absolute max-sm:bottom-3 max-sm:left-3 max-sm:right-3 max-sm:w-auto
-                  sm:absolute sm:w-80 md:w-88
-                `}
+                className="hidden sm:block absolute z-30 p-5 rounded-2xl bg-[#2a1048]/95 backdrop-blur-md border border-purple-400/40 text-white shadow-[0_20px_50px_rgba(0,0,0,0.7)] transition-all animate-in fade-in duration-200 sm:w-80 md:w-88"
                 style={{
-                  left: typeof window !== 'undefined' && window.innerWidth >= 640 
-                    ? (activeCoord.x > 55 ? undefined : `${Math.max(2, activeCoord.x + 1.5)}%`) 
-                    : undefined,
-                  right: typeof window !== 'undefined' && window.innerWidth >= 640 
-                    ? (activeCoord.x > 55 ? `${Math.max(2, 100 - activeCoord.x + 1.5)}%` : undefined) 
-                    : undefined,
-                  top: typeof window !== 'undefined' && window.innerWidth >= 640 
-                    ? `${Math.max(6, Math.min(58, activeCoord.y - 10))}%` 
-                    : undefined,
+                  left: (activeCoord.x > 55 ? undefined : `${Math.max(2, activeCoord.x + 1.5)}%`),
+                  right: (activeCoord.x > 55 ? `${Math.max(2, 100 - activeCoord.x + 1.5)}%` : undefined),
+                  top: `${Math.max(6, Math.min(58, activeCoord.y - 10))}%`,
                 }}
               >
                 {/* Header Card dengan Badge Wilayah & Tombol Tutup */}
@@ -565,19 +578,97 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
             )}
           </div>
 
-          {/* Baris Informasi Petunjuk di Bawah Peta */}
-          <div className="px-6 py-3 bg-[#18072b] border-t border-purple-900/50 flex flex-wrap items-center justify-between gap-3 text-xs text-purple-300">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-pink-400 animate-pulse inline-block" />
-              <span>Titik merah muda menunjukkan posko & helpdesk aktif YASMIN di daerah.</span>
+          {/* MOBILE DEDICATED POSKO CARD (KHUSUS SMARTPHONE) */}
+          {/* Diletakkan di bawah peta sehingga peta Indonesia tetap terlihat 100% utuh tanpa tertutup kartu */}
+          {selectedBranch && (
+            <div className="block sm:hidden p-4 bg-[#1f0b37] border-t border-purple-500/30 transition-all duration-200">
+              {/* Header Posko Mobile dengan Navigasi Next/Prev */}
+              <div className="flex items-center justify-between gap-2 border-b border-purple-800/70 pb-2.5">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-pink-300 bg-pink-900/60 px-2 py-0.5 rounded border border-pink-500/30">
+                    {selectedBranch.province}
+                  </span>
+                  <span className="text-[10px] font-bold text-purple-300 bg-purple-900/40 px-2 py-0.5 rounded">
+                    {selectedBranch.region}
+                  </span>
+                </div>
+
+                {/* Tombol Ganti Posko Cepat di Mobile */}
+                <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    type="button"
+                    onClick={handlePrevBranch}
+                    className="p-1.5 rounded-lg bg-purple-900/70 hover:bg-purple-800 text-purple-200 active:scale-90 transition-transform"
+                    aria-label="Posko Sebelumnya"
+                    title="Posko Sebelumnya"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <span className="text-[11px] font-mono font-bold text-pink-300 px-1">
+                    {safeIndex + 1}/{branches.length}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleNextBranch}
+                    className="p-1.5 rounded-lg bg-purple-900/70 hover:bg-purple-800 text-purple-200 active:scale-90 transition-transform"
+                    aria-label="Posko Selanjutnya"
+                    title="Posko Selanjutnya"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Judul & Detail Cabang Mobile */}
+              <div className="pt-2.5 pb-1.5 space-y-1.5">
+                <h3 className="font-extrabold text-sm text-white leading-snug">
+                  {selectedBranch.name}
+                </h3>
+                <div className="flex items-start gap-2 text-[11px] text-purple-200/90 leading-relaxed">
+                  <MapPin className="w-3.5 h-3.5 text-pink-400 mt-0.5 shrink-0" />
+                  <span>{selectedBranch.address}</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-semibold text-pink-200 pt-0.5">
+                  <Phone className="w-3.5 h-3.5 text-pink-400 shrink-0" />
+                  <span>Hotline: <strong className="font-mono text-white text-xs">{selectedBranch.hotline}</strong></span>
+                </div>
+              </div>
+
+              {/* Tombol Aksi di Mobile */}
+              <div className="pt-2 grid grid-cols-2 gap-2">
+                <a
+                  href={`https://wa.me/62${selectedBranch.hotline.replace(/^0/, '').replace(/[^0-9]/g, '')}?text=Halo%20YASMIN%2C%20saya%20membutuhkan%20informasi%20bantuan%20hukum%20untuk%20Pekerja%20Migran.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2.5 px-3 rounded-xl bg-white hover:bg-slate-100 text-[#1f0d38] font-black text-xs text-center flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-transform"
+                >
+                  <span>Hubungi WA</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-[#1f0d38]" />
+                </a>
+
+                <Link
+                  href={`/pengaduan?branch=${encodeURIComponent(selectedBranch.name)}`}
+                  className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold text-xs text-center flex items-center justify-center transition-all shadow-md active:scale-95"
+                >
+                  Ajukan Kasus
+                </Link>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
+          )}
+
+          {/* Baris Informasi Petunjuk di Bawah Peta */}
+          <div className="px-4 sm:px-6 py-2.5 sm:py-3 bg-[#18072b] border-t border-purple-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-purple-300">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse shrink-0 inline-block" />
+              <span className="text-[11px] sm:text-xs">Titik merah muda menunjukkan 18 posko aktif YASMIN.</span>
+            </div>
+            <div className="flex items-center justify-between sm:justify-end gap-3 text-[11px] sm:text-xs">
               <span className="font-mono text-pink-300 font-bold">{branches.length} Posko Terverifikasi</span>
               <a 
                 href="#direktori-lengkap" 
                 className="text-white hover:text-pink-300 underline font-semibold transition-colors"
               >
-                Lihat Semua Daftar
+                Lihat Semua Direktori
               </a>
             </div>
           </div>
