@@ -13,7 +13,8 @@ import {
   ExternalLink,
   X,
   Compass,
-  CheckCircle2
+  CheckCircle2,
+  ChevronDown
 } from 'lucide-react';
 import Link from 'next/link';
 import { INDONESIA_MAP_SVG_INNER } from './indonesiaMapData';
@@ -374,6 +375,7 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
   const [isPopoverOpen, setIsPopoverOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('Semua');
+  const [isShowingAll, setIsShowingAll] = useState(false);
 
   const regions = ['Semua', 'Sumatera', 'Jawa', 'Bali-Nusa Tenggara', 'Kalimantan', 'Sulawesi', 'Maluku', 'Papua'];
 
@@ -451,19 +453,21 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
           id="peta-interaktif-indonesia"
           className="relative w-full rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#250f45] via-[#1f0c3a] to-[#18082e] border border-purple-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden"
         >
-          {/* Peta Background & Pinpoints Container */}
-          <div className="relative w-full aspect-[2021/922] min-h-[220px] sm:min-h-[460px] md:min-h-[580px] select-none flex items-center justify-center p-2 sm:p-6 overflow-hidden">
+          {/* Inner Padding Wrap untuk Peta */}
+          <div className="relative w-full p-2 sm:p-6">
             {/* Petunjuk sentuh di mobile */}
-            <div className="sm:hidden absolute top-2.5 left-3 z-10 pointer-events-none">
+            <div className="sm:hidden absolute top-4 left-4 z-10 pointer-events-none">
               <span className="text-[10px] font-semibold text-purple-300/90 bg-purple-950/80 px-2.5 py-1 rounded-full border border-purple-500/30 backdrop-blur-sm shadow-sm">
                 Sentuh titik pulau untuk melihat posko
               </span>
             </div>
 
+            {/* Peta Background & Pinpoints Container (Strict Aspect Ratio) */}
+            <div className="relative w-full aspect-[2021/922] select-none mx-auto max-w-5xl">
             {/* Gambar Siluet Putih Peta Indonesia (Inline SVG Vektor Bebas Error) */}
             <svg
               viewBox="0 0 2021 922"
-              className="w-full h-full object-contain pointer-events-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.55)] select-none"
+              className="absolute inset-0 w-full h-full pointer-events-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.55)] select-none"
               style={{
                 fillRule: 'evenodd',
                 clipRule: 'evenodd',
@@ -486,22 +490,22 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
                   onClick={() => handleSelectBranch(b)}
                   onMouseEnter={() => handleSelectBranch(b)}
                   aria-label={b.name}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group focus:outline-none p-2 sm:p-1"
+                  className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group focus:outline-none p-1.5 sm:p-2"
                   style={{
                     left: `${coord.x}%`,
                     top: `${coord.y}%`,
                   }}
                 >
-                  {/* Ping animasi */}
-                  <span className={`absolute inset-0.5 rounded-full bg-pink-400 opacity-75 group-hover:opacity-100 ${
-                    isSelected ? 'animate-ping opacity-90' : 'animate-pulse'
-                  }`} />
+                  {/* Ping animasi HANYA untuk titik yang sedang aktif */}
+                  {isSelected && (
+                    <span className="absolute inset-1 sm:inset-0.5 rounded-full bg-pink-400 opacity-75 animate-ping" />
+                  )}
                   
                   {/* Dot Utama */}
-                  <span className={`relative block rounded-full transition-all duration-200 border-2 ${
+                  <span className={`relative block rounded-full transition-all duration-200 ${
                     isSelected 
-                      ? 'w-3.5 h-3.5 sm:w-5 sm:h-5 bg-pink-300 border-white shadow-[0_0_15px_#f472b6] scale-125' 
-                      : 'w-2 h-2 sm:w-3.5 sm:h-3.5 bg-pink-400 border-white/90 shadow-md group-hover:scale-125 group-hover:bg-pink-300'
+                      ? 'w-2.5 h-2.5 sm:w-4 sm:h-4 bg-pink-300 border-[1.5px] border-white shadow-[0_0_10px_#f472b6] scale-125' 
+                      : 'w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 bg-pink-500 border border-white/80 shadow-sm group-hover:scale-125 group-hover:bg-pink-300'
                   }`} />
                 </button>
               );
@@ -577,8 +581,9 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
               </div>
             )}
           </div>
+        </div>
 
-          {/* MOBILE DEDICATED POSKO CARD (KHUSUS SMARTPHONE) */}
+        {/* MOBILE DEDICATED POSKO CARD (KHUSUS SMARTPHONE) */}
           {/* Diletakkan di bawah peta sehingga peta Indonesia tetap terlihat 100% utuh tanpa tertutup kartu */}
           {selectedBranch && (
             <div className="block sm:hidden p-4 bg-[#1f0b37] border-t border-purple-500/30 transition-all duration-200">
@@ -622,7 +627,7 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
               {/* Judul & Detail Cabang Mobile */}
               <div className="pt-2.5 pb-1.5 space-y-1.5">
                 <h3 className="font-extrabold text-sm text-white leading-snug">
-                  {selectedBranch.name}
+                  {selectedBranch.name.replace('YASMIN Helpdesk ', '')}
                 </h3>
                 <div className="flex items-start gap-2 text-[11px] text-purple-200/90 leading-relaxed">
                   <MapPin className="w-3.5 h-3.5 text-pink-400 mt-0.5 shrink-0" />
@@ -704,7 +709,10 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
             {regions.map((reg) => (
               <button
                 key={reg}
-                onClick={() => setSelectedRegion(reg)}
+                onClick={() => {
+                  setSelectedRegion(reg);
+                  setIsShowingAll(false);
+                }}
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
                   selectedRegion === reg
                     ? 'bg-pink-600 text-white shadow-lg'
@@ -723,7 +731,7 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
                 Tidak ada kantor posko yang cocok dengan pencarian &quot;{searchQuery}&quot;.
               </div>
             ) : (
-              filteredBranches.map((b) => {
+              (selectedRegion === 'Semua' && !isShowingAll ? filteredBranches.slice(0, 6) : filteredBranches).map((b) => {
                 const isSelected = selectedBranch.id === b.id;
 
                 return (
@@ -736,18 +744,15 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
                         : 'bg-purple-950/40 border-purple-800/60 hover:border-purple-600 hover:bg-purple-900/40'
                     }`}
                   >
-                    <div className="space-y-3">
+                    <div className="space-y-2.5">
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-[10px] font-black uppercase tracking-wider text-pink-300 bg-pink-950/80 px-2 py-0.5 rounded border border-pink-600/40">
                           {b.province}
                         </span>
-                        <span className="text-[10px] text-purple-300 font-mono">
-                          {b.city}
-                        </span>
                       </div>
 
                       <h4 className="font-extrabold text-sm text-white leading-snug">
-                        {b.name}
+                        {b.name.replace('YASMIN Helpdesk ', '')}
                       </h4>
 
                       <p className="text-xs text-purple-200/80 line-clamp-2 leading-relaxed flex items-start gap-1.5">
@@ -756,42 +761,41 @@ export default function InteractiveMap({ branches = OFFICIAL_BRANCHES }: { branc
                       </p>
                     </div>
 
-                    <div className="pt-4 mt-4 border-t border-purple-800/60 space-y-2">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-purple-300 font-medium">Hotline WA:</span>
-                        <span className="font-mono font-bold text-pink-300">{b.hotline}</span>
+                    <div className="pt-3 mt-4 border-t border-purple-800/60 flex items-center justify-between gap-3">
+                      <div className="flex flex-col">
+                        <span className="text-[9px] text-purple-400 uppercase tracking-wider font-semibold mb-0.5">Hotline WA</span>
+                        <span className="font-mono font-bold text-pink-200 text-xs sm:text-sm">{b.hotline}</span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCardClick(b);
-                          }}
-                          className="w-full py-2 px-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] text-center transition-colors flex items-center justify-center gap-1"
-                        >
-                          <span>Sorot di Peta</span>
-                          <ChevronRight className="w-3 h-3" />
-                        </button>
-
-                        <a
-                          href={`https://wa.me/62${b.hotline.replace(/^0/, '').replace(/[^0-9]/g, '')}?text=Halo%20YASMIN%2C%20saya%20ingin%20berkonsultasi.`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="w-full py-2 px-2.5 rounded-lg bg-pink-600 hover:bg-pink-700 text-white font-bold text-[11px] text-center transition-colors flex items-center justify-center gap-1 shadow"
-                        >
-                          <MessageCircle className="w-3 h-3" />
-                          <span>Chat WA</span>
-                        </a>
-                      </div>
+                      <a
+                        href={`https://wa.me/62${b.hotline.replace(/^0/, '').replace(/[^0-9]/g, '')}?text=Halo%20YASMIN%2C%20saya%20ingin%20berkonsultasi.`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="py-1.5 px-3 rounded-lg bg-pink-600/20 hover:bg-pink-600 text-pink-100 font-bold text-[11px] text-center transition-all flex items-center gap-1.5 border border-pink-500/50 hover:border-pink-600"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        <span>Chat WA</span>
+                      </a>
                     </div>
                   </div>
                 );
               })
             )}
           </div>
+
+          {/* Tombol Lihat Selengkapnya (Khusus Tab Semua) */}
+          {selectedRegion === 'Semua' && filteredBranches.length > 6 && (
+            <div className="pt-8 pb-4 flex justify-center">
+              <button
+                onClick={() => setIsShowingAll(!isShowingAll)}
+                className="px-6 py-2.5 rounded-full bg-purple-900/60 hover:bg-purple-800 text-purple-200 text-xs font-bold border border-purple-700/50 transition-colors flex items-center gap-2 shadow-sm hover:shadow-md"
+              >
+                <span>{isShowingAll ? 'Tampilkan Lebih Sedikit' : `Lihat Selengkapnya (${filteredBranches.length - 6} Posko)`}</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isShowingAll ? 'rotate-180 text-pink-400' : 'text-purple-400'}`} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>

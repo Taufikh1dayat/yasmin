@@ -53,20 +53,20 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 pt-1 text-xs">
                 <a
-                  href="https://instagram.com/studimigran"
+                  href="https://www.instagram.com/studi.migran?stkn=bTJhamFpZ2t0dWNu"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
                 >
-                  IG: @studimigran
+                  IG: @studi.migran
                 </a>
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/share/14zwVKwALbg/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
                 >
-                  FB: studi migran
+                  FB: Studi Migran
                 </a>
               </li>
               <li className="pt-1.5">

@@ -10,7 +10,10 @@ import {
   Send, 
   ChevronDown, 
   Heart,
-  ShieldCheck
+  ShieldCheck,
+  Instagram,
+  Facebook,
+  Mail
 } from 'lucide-react';
 import DonationModal from './DonationModal';
 
@@ -174,6 +177,17 @@ export default function Navbar() {
           </div>
 
           <div className="hidden sm:flex items-center gap-4 text-[11px] text-emerald-100">
+            <div className="flex items-center gap-3 pr-4 border-r border-emerald-600/60">
+              <a href="https://www.instagram.com/studi.migran?stkn=bTJhamFpZ2t0dWNu" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Instagram">
+                <Instagram className="w-3.5 h-3.5" />
+              </a>
+              <a href="https://www.facebook.com/share/14zwVKwALbg/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Facebook">
+                <Facebook className="w-3.5 h-3.5" />
+              </a>
+              <a href="mailto:studi.migran@gmail.com" className="hover:text-white transition-colors" title="Email">
+                <Mail className="w-3.5 h-3.5" />
+              </a>
+            </div>
             <span>Senin – Minggu (Layanan Respons Cepat)</span>
             <span>•</span>
             <Link href="/admin/login" className="hover:text-white transition-colors">
