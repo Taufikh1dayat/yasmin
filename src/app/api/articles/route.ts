@@ -18,22 +18,26 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const search = searchParams.get('search');
+    const limit = Math.min(Math.max(parseInt(searchParams.get('limit') || '50', 10) || 50, 1), 100);
 
     const where: any = {};
     if (category && category !== 'Semua') {
       where.category = category;
     }
-    if (search) {
+    if (search && search.trim()) {
+      // Batasi panjang query pencarian maksimal 80 karakter untuk mencegah CPU exhaustion
+      const cleanSearch = search.trim().slice(0, 80);
       where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { excerpt: { contains: search, mode: 'insensitive' } },
-        { content: { contains: search, mode: 'insensitive' } },
+        { title: { contains: cleanSearch, mode: 'insensitive' } },
+        { excerpt: { contains: cleanSearch, mode: 'insensitive' } },
+        { content: { contains: cleanSearch, mode: 'insensitive' } },
       ];
     }
 
     const articles = await prisma.article.findMany({
       where,
       orderBy: { publishedAt: 'desc' },
+      take: limit,
     });
 
     return NextResponse.json(articles);

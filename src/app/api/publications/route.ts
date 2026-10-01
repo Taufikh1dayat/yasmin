@@ -19,22 +19,25 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const search = searchParams.get('search');
+    const limit = Math.min(Math.max(parseInt(searchParams.get('limit') || '50', 10) || 50, 1), 100);
 
     const where: any = {};
     if (category && category !== 'Semua') {
       where.category = category;
     }
-    if (search) {
+    if (search && search.trim()) {
+      const cleanSearch = search.trim().slice(0, 80);
       where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { author: { contains: search, mode: 'insensitive' } },
+        { title: { contains: cleanSearch, mode: 'insensitive' } },
+        { description: { contains: cleanSearch, mode: 'insensitive' } },
+        { author: { contains: cleanSearch, mode: 'insensitive' } },
       ];
     }
 
     const publications = await prisma.publication.findMany({
       where,
       orderBy: { year: 'desc' },
+      take: limit,
     });
 
     return NextResponse.json(publications);

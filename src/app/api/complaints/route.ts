@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentAdminSession } from '@/lib/auth';
+import { getClientIp, checkRateLimit } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
 
-// Generate random ticket code, e.g. YSM-2026-X8B9
+// Generate random ticket code dengan entropi tinggi (6 karakter acak = 32^6 = 1+ miliar kombinasi)
 function generateTicketCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let random = '';
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 6; i++) {
     random += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return `YSM-2026-${random}`;
@@ -16,6 +17,27 @@ function generateTicketCode() {
 
 export async function POST(request: Request) {
   try {
+    // 1. Proteksi Ukuran Payload (Tolak payload > 1 MB sebelum parsing untuk mencegah Memory Exhaustion)
+    const contentLength = request.headers.get('content-length');
+    if (contentLength && parseInt(contentLength, 10) > 1024 * 1024) {
+      return NextResponse.json(
+        { error: 'Ukuran data pengaduan terlalu besar (maksimal 1 MB).' },
+        { status: 413 }
+      );
+    }
+
+    // 2. Rate Limiting IP: Maksimal 5 laporan per 10 menit per IP untuk mencegah DDoS spam DB
+    const clientIp = getClientIp(request);
+    const rateLimit = checkRateLimit(`complaint_submit_${clientIp}`, 5, 10 * 60 * 1000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { 
+          error: `Terlalu banyak laporan pengaduan yang dikirim. Demi stabilitas sistem, silakan coba kembali dalam ${Math.ceil(rateLimit.resetInSeconds / 60)} menit.` 
+        },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const {
       complainantName,
@@ -26,7 +48,16 @@ export async function POST(request: Request) {
       category,
       chronology,
       branchId,
+      website_hp, // Honeypot field (tersembunyi dari user asli, hanya diisi bot)
     } = body;
+
+    // 3. Honeypot Anti-Bot: Jika bot mengisi field tersembunyi, gagalkan diam-diam tanpa membebani database
+    if (website_hp) {
+      return NextResponse.json({
+        success: true,
+        ticketCode: 'YSM-2026-OK',
+      });
+    }
 
     if (!contact || !category || !chronology) {
       return NextResponse.json(
@@ -90,8 +121,27 @@ export async function GET(request: Request) {
 
     // Jika parameter ticket diberikan, cari spesifik (untuk fitur lacak publik)
     if (ticket) {
+      const clientIp = getClientIp(request);
+      // Rate limiting: Maksimal 20 kali cek tiket per menit per IP
+      const rateLimit = checkRateLimit(`ticket_lookup_${clientIp}`, 20, 60 * 1000);
+      if (!rateLimit.allowed) {
+        return NextResponse.json(
+          { error: 'Terlalu banyak permintaan pengecekan tiket. Silakan coba kembali dalam 1 menit.' },
+          { status: 429 }
+        );
+      }
+
+      const cleanTicket = ticket.trim().toUpperCase();
+      // Validasi format tiket sebelum query DB untuk mencegah DoS query invalid
+      if (!/^[A-Z0-9-]{4,30}$/.test(cleanTicket)) {
+        return NextResponse.json(
+          { error: 'Format kode tiket tidak valid. Mohon periksa kembali kode tiket Anda.' },
+          { status: 400 }
+        );
+      }
+
       const complaint = await prisma.complaint.findUnique({
-        where: { ticketCode: ticket.trim().toUpperCase() },
+        where: { ticketCode: cleanTicket },
         include: {
           branch: {
             select: {

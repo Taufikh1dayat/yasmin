@@ -10,4 +10,5 @@ export const prisma =
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   });
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+// Selalu simpan di globalThis agar container serverless (Vercel) menggunakan kembali pool koneksi yang sama
+globalForPrisma.prisma = prisma;
