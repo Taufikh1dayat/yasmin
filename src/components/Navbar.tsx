@@ -13,9 +13,11 @@ import {
   ShieldCheck,
   Instagram,
   Facebook,
-  Mail
+  Mail,
+  Lock
 } from 'lucide-react';
 import DonationModal from './DonationModal';
+import { useSiteSettings } from '@/context/SettingsContext';
 
 interface SubItem {
   name: string;
@@ -83,6 +85,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const navContainerRef = useRef<HTMLDivElement | null>(null);
+  const { settings } = useSiteSettings();
 
   // Periksa apakah ada sesi admin aktif
   useEffect(() => {
@@ -156,35 +159,52 @@ export default function Navbar() {
   return (
     <>
       {/* Top Banner Kedaruratan & Hotline */}
-      <div className="bg-gradient-to-r from-brand-blue-900 via-brand-teal-700 to-brand-green-700 text-white text-xs py-2 px-4 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
-            <span className="flex h-2 w-2 relative">
+      <div className="bg-gradient-to-r from-brand-blue-900 via-brand-teal-700 to-brand-green-700 text-white text-xs py-2 px-3 sm:px-4 shadow-sm">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
+            <span className="flex h-2 w-2 relative shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-300"></span>
             </span>
-            <span className="font-medium tracking-wide">
+            <span className="font-medium tracking-wide hidden sm:inline">
               Hotline Kedaruratan PMI 24 Jam:
             </span>
+            <span className="font-medium tracking-wide inline sm:hidden">
+              Hotline 24 Jam:
+            </span>
             <a 
-              href="https://wa.me/6281198765431" 
+              href={`https://wa.me/${settings.whatsapp}`} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="font-bold underline hover:text-emerald-200 transition-colors flex items-center gap-1"
+              className="font-bold underline hover:text-emerald-200 transition-colors flex items-center gap-1 shrink-0"
             >
-              <PhoneCall className="w-3 h-3 inline" /> 0811-9876-5431 (WhatsApp)
+              <PhoneCall className="w-3 h-3 inline shrink-0" />
+              <span>{settings.hotline}</span>
+              <span className="hidden sm:inline">(WhatsApp)</span>
             </a>
+          </div>
+
+          {/* Akses Cepat Portal Staf di Layar Mobile */}
+          <div className="flex sm:hidden items-center shrink-0">
+            <Link
+              href="/admin/login"
+              className="text-[11px] font-semibold text-emerald-100 hover:text-white px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 transition-colors flex items-center gap-1 border border-white/10"
+              title="Portal Khusus Staf & Admin"
+            >
+              <Lock className="w-2.5 h-2.5" />
+              <span>Staf</span>
+            </Link>
           </div>
 
           <div className="hidden sm:flex items-center gap-4 text-[11px] text-emerald-100">
             <div className="flex items-center gap-3 pr-4 border-r border-emerald-600/60">
-              <a href="https://www.instagram.com/studi.migran?stkn=bTJhamFpZ2t0dWNu" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Instagram">
+              <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Instagram">
                 <Instagram className="w-3.5 h-3.5" />
               </a>
-              <a href="https://www.facebook.com/share/14zwVKwALbg/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Facebook">
+              <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Facebook">
                 <Facebook className="w-3.5 h-3.5" />
               </a>
-              <a href="mailto:studi.migran@gmail.com" className="hover:text-white transition-colors" title="Email">
+              <a href={`mailto:${settings.email}`} className="hover:text-white transition-colors" title="Email">
                 <Mail className="w-3.5 h-3.5" />
               </a>
             </div>
@@ -407,7 +427,7 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {isAdminLoggedIn && (
+            {isAdminLoggedIn ? (
               <div className="pt-2">
                 <Link
                   href="/admin/dashboard"
@@ -416,6 +436,17 @@ export default function Navbar() {
                 >
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
                   <span>Kembali ke Panel Admin</span>
+                </Link>
+              </div>
+            ) : (
+              <div className="pt-2 border-t border-slate-100/80">
+                <Link
+                  href="/admin/login"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200/80 px-3 py-2.5 rounded-lg text-center font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <Lock className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Portal Staf / Login Admin</span>
                 </Link>
               </div>
             )}

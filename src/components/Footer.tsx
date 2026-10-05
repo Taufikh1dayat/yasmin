@@ -4,9 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Scale, Phone, Mail, MapPin, ShieldCheck, HeartHandshake, FileText, ArrowUpRight, Lock } from 'lucide-react';
+import { useSiteSettings } from '@/context/SettingsContext';
 
 export default function Footer() {
   const pathname = usePathname();
+  const { settings } = useSiteSettings();
 
   // Jangan render footer publik di seluruh rute admin
   if (pathname?.startsWith('/admin')) {
@@ -47,31 +49,31 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <a href="mailto:studi.migran@gmail.com" className="hover:text-emerald-300 transition-colors">
-                  studi.migran@gmail.com
+                <a href={`mailto:${settings.email}`} className="hover:text-emerald-300 transition-colors">
+                  {settings.email}
                 </a>
               </li>
               <li className="flex items-center gap-3 pt-1 text-xs">
                 <a
-                  href="https://www.instagram.com/studi.migran?stkn=bTJhamFpZ2t0dWNu"
+                  href={settings.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
                 >
-                  IG: @studi.migran
+                  IG: Instagram Resmi
                 </a>
                 <a
-                  href="https://www.facebook.com/share/14zwVKwALbg/"
+                  href={settings.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
                 >
-                  FB: Studi Migran
+                  FB: Facebook Resmi
                 </a>
               </li>
               <li className="pt-1.5">
                 <a
-                  href="https://wa.me/6281198765431"
+                  href={`https://wa.me/${settings.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-600 px-3 py-1.5 rounded-md transition-colors"
@@ -143,7 +145,7 @@ export default function Footer() {
             <Link href="/profil" className="hover:text-slate-400">Kode Etik Advokasi</Link>
             <Link href="/profil" className="hover:text-slate-400">Kebijakan Privasi</Link>
             <Link href="/pengaduan" className="hover:text-slate-400">SOP Pelaporan</Link>
-            <Link href="/admin/dashboard" className="text-slate-500 hover:text-emerald-400 transition-colors flex items-center gap-1 font-semibold">
+            <Link href="/admin/login" className="text-slate-500 hover:text-emerald-400 transition-colors flex items-center gap-1 font-semibold py-1">
               <Lock className="w-3 h-3" />
               <span>Portal Admin</span>
             </Link>

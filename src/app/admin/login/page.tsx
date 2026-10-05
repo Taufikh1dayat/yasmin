@@ -54,32 +54,32 @@ function AdminLoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-brand-blue-950 to-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-brand-blue-950 to-slate-900 flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Decorative Glow */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-brand-green-500/15 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-brand-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+      <div className="w-full sm:mx-auto sm:max-w-md relative z-10">
         {/* Header Logo */}
-        <div className="text-center space-y-4">
-          <div className="inline-block bg-white px-6 py-4 rounded-3xl shadow-xl border border-white/30">
+        <div className="text-center space-y-3 sm:space-y-4">
+          <div className="inline-block bg-white px-5 py-3 sm:px-6 sm:py-4 rounded-2xl sm:rounded-3xl shadow-xl border border-white/30">
             <img
               src="/images/yasmin_logo.png"
               alt="YASMIN"
-              className="h-20 sm:h-24 w-auto object-contain mx-auto"
+              className="h-14 sm:h-24 w-auto object-contain mx-auto"
             />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight px-2">
             Portal Administrasi YASMIN
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-400 px-4">
             Sistem Manajemen Kasus, Advokasi Hukum & Publikasi Ketenagakerjaan
           </p>
         </div>
 
         {/* Login Box */}
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white/95 backdrop-blur-md py-8 px-6 sm:px-10 shadow-2xl rounded-3xl border border-white/20 space-y-6">
+        <div className="mt-6 sm:mt-8 w-full sm:mx-auto sm:max-w-md">
+          <div className="bg-white/95 backdrop-blur-md py-6 px-5 sm:py-8 sm:px-10 shadow-2xl rounded-2xl sm:rounded-3xl border border-white/20 space-y-5 sm:space-y-6">
             {error && (
               <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />

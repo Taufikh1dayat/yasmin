@@ -85,3 +85,14 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model SiteSetting {
+  id        String   @id @default("default")
+  hotline   String   @default("0811-9876-5431")
+  whatsapp  String   @default("6281198765431")
+  email     String   @default("studi.migran@gmail.com")
+  instagram String   @default("https://www.instagram.com/studi.migran?stkn=bTJhamFpZ2t0dWNu")
+  facebook  String   @default("https://www.facebook.com/share/14zwVKwALbg/")
+  updatedAt DateTime @updatedAt
+}
+

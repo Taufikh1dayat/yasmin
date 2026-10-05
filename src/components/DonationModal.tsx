@@ -13,6 +13,7 @@ import {
   ExternalLink,
   ShoppingBag
 } from 'lucide-react';
+import { useSiteSettings } from '@/context/SettingsContext';
 
 interface DonationModalProps {
   isOpen: boolean;
@@ -59,6 +60,7 @@ const BANK_ACCOUNTS = [
 ];
 
 export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
+  const { settings } = useSiteSettings();
   const [selectedAmount, setSelectedAmount] = useState<number | null>(100000);
   const [customAmount, setCustomAmount] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'transfer' | 'qris' | 'merchandise'>('transfer');
@@ -92,7 +94,7 @@ export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
     const text = encodeURIComponent(
       `Halo Tim Keuangan YASMIN,\n\nSaya ingin konfirmasi donasi solidaritas:\n- Nama: ${donorName || 'Hamba Allah (Anonim)'}\n- Kontak: ${donorContact || '-'}\n- Nominal: Rp ${parseInt(nominal, 10).toLocaleString('id-ID')}\n- Pesan/Doa: ${donorMessage || '-'}\n\nMohon informasi verifikasi penerimaan. Terima kasih.`
     );
-    window.open(`https://wa.me/6281198765431?text=${text}`, '_blank');
+    window.open(`https://wa.me/${settings.whatsapp}?text=${text}`, '_blank');
     setSubmittedMessage(true);
   };
 
@@ -317,7 +319,7 @@ export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
                       <span className="text-xs font-extrabold text-emerald-800">Rp 45.000</span>
                     </div>
                     <a
-                      href="https://wa.me/6281198765431?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Kopi%20Robusta%20Purna%20Migran%20Majenang"
+                      href={`https://wa.me/${settings.whatsapp}?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Kopi%20Robusta%20Purna%20Migran%20Majenang`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold whitespace-nowrap transition-colors"
@@ -333,7 +335,7 @@ export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
                       <span className="text-xs font-extrabold text-emerald-800">Rp 95.000</span>
                     </div>
                     <a
-                      href="https://wa.me/6281198765431?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Kaos%20Solidaritas%20Hak%20Buruh%20Migran"
+                      href={`https://wa.me/${settings.whatsapp}?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Kaos%20Solidaritas%20Hak%20Buruh%20Migran`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold whitespace-nowrap transition-colors"
@@ -349,7 +351,7 @@ export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
                       <span className="text-xs font-extrabold text-emerald-800">Rp 50.000</span>
                     </div>
                     <a
-                      href="https://wa.me/6281198765431?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Tote%20Bag%20Kanvas%20Solidaritas"
+                      href={`https://wa.me/${settings.whatsapp}?text=Halo%20YASMIN,%20saya%20ingin%20memesan%20Tote%20Bag%20Kanvas%20Solidaritas`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold whitespace-nowrap transition-colors"

@@ -14,8 +14,13 @@ import {
   Save, 
   ShieldAlert,
   Calendar,
-  Check
+  Check,
+  PhoneCall,
+  Instagram,
+  Facebook,
+  Globe
 } from 'lucide-react';
+import { useSiteSettings } from '@/context/SettingsContext';
 
 interface UserProfile {
   id: string;
@@ -46,6 +51,19 @@ export default function AdminSettingsPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
+  // State Pengaturan Kontak & Hotline
+  const [contactSettings, setContactSettings] = useState({
+    hotline: '',
+    whatsapp: '',
+    email: '',
+    instagram: '',
+    facebook: '',
+  });
+  const [loadingContact, setLoadingContact] = useState(true);
+  const [savingContact, setSavingContact] = useState(false);
+  const [contactSuccessMsg, setContactSuccessMsg] = useState<string | null>(null);
+  const [contactErrorMsg, setContactErrorMsg] = useState<string | null>(null);
+
   // Fetch profil saat ini
   const fetchProfile = async () => {
     try {
@@ -63,9 +81,61 @@ export default function AdminSettingsPage() {
     }
   };
 
+  // Fetch pengaturan kontak dari database
+  const fetchContactSettings = async () => {
+    try {
+      setLoadingContact(true);
+      const res = await fetch('/api/settings');
+      if (res.ok) {
+        const data = await res.json();
+        setContactSettings({
+          hotline: data.hotline || '',
+          whatsapp: data.whatsapp || '',
+          email: data.email || '',
+          instagram: data.instagram || '',
+          facebook: data.facebook || '',
+        });
+      }
+    } catch (err) {
+      console.error('Failed to load contact settings', err);
+    } finally {
+      setLoadingContact(false);
+    }
+  };
+
   useEffect(() => {
     fetchProfile();
+    fetchContactSettings();
   }, []);
+
+  const { refreshSettings } = useSiteSettings();
+
+  const handleSaveContact = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactSuccessMsg(null);
+    setContactErrorMsg(null);
+    setSavingContact(true);
+
+    try {
+      const res = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contactSettings),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setContactSuccessMsg('Pengaturan kontak dan media sosial berhasil disimpan!');
+        await refreshSettings();
+        setTimeout(() => setContactSuccessMsg(null), 4000);
+      } else {
+        setContactErrorMsg(data.error || 'Gagal menyimpan pengaturan kontak.');
+      }
+    } catch {
+      setContactErrorMsg('Terjadi kesalahan jaringan saat menyimpan.');
+    } finally {
+      setSavingContact(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -229,8 +299,8 @@ export default function AdminSettingsPage() {
           </div>
         </div>
 
-        {/* Kolom Kanan: Form Ganti Kata Sandi */}
-        <div className="lg:col-span-2">
+        {/* Kolom Kanan: Form Ganti Kata Sandi & Kontak */}
+        <div className="lg:col-span-2 space-y-8">
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
             <div className="border-b border-slate-100 pb-4">
               <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -398,6 +468,151 @@ export default function AdminSettingsPage() {
                     <>
                       <Save className="w-4 h-4" />
                       <span>Perbarui Kata Sandi</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Form Kontak & Media Sosial */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+            <div className="border-b border-slate-100 pb-4">
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <PhoneCall className="w-5 h-5 text-emerald-700" />
+                <span>Pengaturan Kontak Hotline & Media Sosial Resmi</span>
+              </h2>
+              <p className="text-xs text-slate-500 mt-1">
+                Ubah nomor WhatsApp hotline, email, dan tautan sosial media resmi YASMIN. Perubahan akan langsung tampil di seluruh website secara otomatis.
+              </p>
+            </div>
+
+            {contactSuccessMsg && (
+              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span>{contactSuccessMsg}</span>
+              </div>
+            )}
+
+            {contactErrorMsg && (
+              <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+                <span>{contactErrorMsg}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSaveContact} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Hotline Display */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Nomor Tampilan Hotline (Layar)
+                  </label>
+                  <div className="relative">
+                    <PhoneCall className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="text"
+                      required
+                      value={contactSettings.hotline}
+                      onChange={(e) => setContactSettings({ ...contactSettings, hotline: e.target.value })}
+                      placeholder="Contoh: 0811-9876-5431"
+                      className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50 focus:bg-white"
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">
+                    Teks yang tampil di banner atas dan hero section
+                  </span>
+                </div>
+
+                {/* WhatsApp Direct Number */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Nomor WhatsApp Link (wa.me)
+                  </label>
+                  <div className="relative">
+                    <PhoneCall className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-600" />
+                    <input
+                      type="text"
+                      required
+                      value={contactSettings.whatsapp}
+                      onChange={(e) => setContactSettings({ ...contactSettings, whatsapp: e.target.value })}
+                      placeholder="Contoh: 6281198765431"
+                      className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50 focus:bg-white font-mono"
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">
+                    Format angka internasional tanpa tanda tambah (awalan 62)
+                  </span>
+                </div>
+              </div>
+
+              {/* Email Resmi */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Alamat Email Resmi YASMIN
+                </label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="email"
+                    required
+                    value={contactSettings.email}
+                    onChange={(e) => setContactSettings({ ...contactSettings, email: e.target.value })}
+                    placeholder="Contoh: studi.migran@gmail.com"
+                    className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50 focus:bg-white"
+                  />
+                </div>
+              </div>
+
+              {/* Instagram URL */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Tautan Profil Instagram Resmi
+                </label>
+                <div className="relative">
+                  <Instagram className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-pink-600" />
+                  <input
+                    type="url"
+                    required
+                    value={contactSettings.instagram}
+                    onChange={(e) => setContactSettings({ ...contactSettings, instagram: e.target.value })}
+                    placeholder="https://www.instagram.com/..."
+                    className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50 focus:bg-white text-xs"
+                  />
+                </div>
+              </div>
+
+              {/* Facebook URL */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Tautan Halaman Facebook Resmi
+                </label>
+                <div className="relative">
+                  <Facebook className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600" />
+                  <input
+                    type="url"
+                    required
+                    value={contactSettings.facebook}
+                    onChange={(e) => setContactSettings({ ...contactSettings, facebook: e.target.value })}
+                    placeholder="https://www.facebook.com/..."
+                    className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50 focus:bg-white text-xs"
+                  />
+                </div>
+              </div>
+
+              {/* Tombol Simpan Kontak */}
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-end">
+                <button
+                  type="submit"
+                  disabled={savingContact || loadingContact}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 disabled:opacity-50"
+                >
+                  {savingContact ? (
+                    <span>Menyimpan Pengaturan...</span>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4" />
+                      <span>Simpan Pengaturan Kontak</span>
                     </>
                   )}
                 </button>

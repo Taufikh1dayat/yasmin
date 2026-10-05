@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { SettingsProvider } from "@/context/SettingsContext";
 
 export const metadata: Metadata = {
   title: "YASMIN - Yayasan Studi Migran Indonesia | Advokasi & Perlindungan Hukum PMI",
@@ -41,9 +42,11 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500 selection:text-white">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <SettingsProvider>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </SettingsProvider>
       </body>
     </html>
   );

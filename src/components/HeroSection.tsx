@@ -1,8 +1,12 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { PhoneCall, FileText, ArrowRight, ShieldCheck, MapPin, Scale, AlertCircle } from 'lucide-react';
+import { useSiteSettings } from '@/context/SettingsContext';
 
 export default function HeroSection() {
+  const { settings } = useSiteSettings();
   return (
     <section className="relative overflow-hidden text-white bg-slate-900">
       {/* Background Image Dokumenter Otentik */}
@@ -94,7 +98,7 @@ export default function HeroSection() {
             <div>
               <h3 className="font-bold text-white text-sm">Hotline Respons Cepat</h3>
               <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                Terhubung langsung ke koordinator advokasi di nomor resmi WhatsApp: <span className="text-emerald-300 font-bold">0811-9876-5431</span>.
+                Terhubung langsung ke koordinator advokasi di nomor resmi WhatsApp: <span className="text-emerald-300 font-bold">{settings.hotline}</span>.
               </p>
             </div>
           </div>
