@@ -39,42 +39,6 @@ Portal resmi Yayasan Studi Migran Indonesia (YASMIN) yang menyelenggarakan bantu
 
 ---
 
-## Panduan Instalasi Lokal
-
-### 1. Klon Repositori
-`ash
-git clone https://github.com/Taufikh1dayat/yasmin.git
-cd yasmin
-`
-
-### 2. Pasang Dependensi
-`ash
-npm install
-`
-
-### 3. Konfigurasi Environment
-Salin file .env.example menjadi .env:
-`ash
-cp .env.example .env
-`
-Sesuaikan string koneksi DATABASE_URL dengan database PostgreSQL lokal Anda.
-
-### 4. Setup Database dan Seeding
-`ash
-# Push schema ke database
-npx prisma db push
-
-# Jalankan data seeding (Helpdesk, Publikasi, Berita, Contoh Kasus, Default Admin)
-node prisma/seed.js
-`
-
-### 5. Jalankan Server Development
-`ash
-npm run dev
-`
-Buka http://localhost:3000 pada browser Anda.
-
----
 
 ---
 
