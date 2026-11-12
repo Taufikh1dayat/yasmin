@@ -76,12 +76,6 @@ Buka http://localhost:3000 pada browser Anda.
 
 ---
 
-## Akun Default Staf / Admin
-
-- URL Login Admin: http://localhost:3000/admin/login
-- Email: admin@yasmin.or.id
-- Password: admin123456
-
 ---
 
 ## Lisensi
